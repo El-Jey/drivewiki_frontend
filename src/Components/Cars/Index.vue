@@ -88,18 +88,32 @@ export default {
         return {
             imagesFolder: {
                 cars: config.app.images_folder.cars,
-                icons: config.app.images_folder.icons
-            }
+                icons: config.app.images_folder.icons,
+            },
         };
+    },
+    beforeRouteEnter(to, from, next) {
+        next((vm) => {
+            if (vm.$helpers.isEmptyObject(vm.$route.query)) {
+                console.log("Object is empty");
+                return;
+            }
+            console.log("Object has properties");
+        });
+    },
+    beforeRouteUpdate(to, from, next) {
+        console.log(this.$route.query);
+        console.log(to);
+        next();
     },
     mounted() {
         axios
             .get("/public/cars/list")
-            .then(response => {
+            .then((response) => {
                 this.$store.commit(VEHICLES_LIST, response.data.result);
                 return;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 this.$store.commit(VEHICLES_LIST, null);
                 return;
@@ -111,7 +125,7 @@ export default {
         },
         isEmptyCarInfo() {
             return this.$store.state.isEmptyCarModelDetails;
-        }
-    }
+        },
+    },
 };
 </script>

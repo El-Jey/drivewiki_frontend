@@ -24,15 +24,15 @@ const axios = require("axios").default;
 export default {
     components: {
         AppHeader,
-        AppLeftBar
+        AppLeftBar,
     },
     computed: {
         isSearchOpened() {
             return this.$store.getters.isSearchOpened;
-        }
+        },
     },
     mounted() {
-        document.body.addEventListener("click", e => {
+        document.body.addEventListener("click", (e) => {
             if (e.target.closest(".nav-search-container")) {
                 return;
             }
@@ -44,7 +44,7 @@ export default {
 
         let touchStartX = 0,
             touchEndX = 0;
-        document.body.addEventListener("touchstart", e => {
+        document.body.addEventListener("touchstart", (e) => {
             if (e.changedTouches[0].clientY <= 50) {
                 // Don`t handle on header
                 return;
@@ -52,7 +52,7 @@ export default {
             touchStartX = e.changedTouches[0].clientX;
         });
 
-        document.body.addEventListener("touchend", e => {
+        document.body.addEventListener("touchend", (e) => {
             if (e.changedTouches[0].clientY <= 50) {
                 // Don`t handle on header
                 return;
@@ -75,7 +75,7 @@ export default {
     },
     created() {
         // TODO: получить запросом типы транспортных средств
-        console.log('created');
-    }
+        console.log("created");
+    },
 };
 </script>

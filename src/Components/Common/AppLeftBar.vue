@@ -35,7 +35,7 @@
                             :key="model"
                         >
                             <router-link
-                                :to="`?brand=${vehicle.brand}&model=${model}`"
+                            :to="{ query: {brand: `${vehicle.brand}`, model: `${model}`}}" append
                             >{{ model }}</router-link>
                         </li>
                     </ul>
