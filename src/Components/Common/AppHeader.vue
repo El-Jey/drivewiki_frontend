@@ -106,8 +106,8 @@
                                             class="dropdown-models"
                                         >
                                             <li
-                                                v-for="(model, index) in manufacturer.models"
-                                                :key="index"
+                                                v-for="(model) in manufacturer.models"
+                                                :key="model"
                                             >
                                                 <router-link
                                                     :to="'?brand=' + manufacturer.brand + '&model=' + model"

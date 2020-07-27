@@ -1,19 +1,37 @@
 <template>
     <div class="locale-changer">
-        <select v-model="$i18n.locale">
-            <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
+        <select @change="changeLanguage($event)">
+            <option v-for="(lang) in langs" :key="lang.locale" :value="lang.locale">{{ lang.name }}</option>
         </select>
     </div>
 </template>
 
 <script>
-import langs from "../../localization/langs";
+const axios = require("axios").default;
+import { loadLanguageAsync } from "@/localization";
 
 export default {
+    created() {
+        axios
+            .get("public/localization/list")
+            .then((response) => {
+                return (this.langs = response.data.result);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
     data() {
         return {
-            langs: langs
+            langs: null,
         };
-    }
+    },
+    methods: {
+        changeLanguage(e) {
+            loadLanguageAsync(e.target.value).then(() => {
+                console.log("Language loaded!"); // TODO: добавить прелоадер
+            });
+        },
+    },
 };
 </script>

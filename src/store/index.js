@@ -12,7 +12,8 @@ export default new Vuex.Store({
     isEmptyCarModelDetails: false,
     motorcycles: null,
     motorcycleModelDetails: null,
-    isEmptyMotorcycleModelDetails: false
+    isEmptyMotorcycleModelDetails: false,
+    selectedBrand: ''
   },
   mutations: {
     [types.TOGGLE_SITE_SEARCH](state) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     [types.IS_EMPTY_MOTORCYCLE_DETAILS](state, flag) {
       state.isEmptyMotorcycleModelDetails = flag;
+    },
+    [types.SELECTED_BRAND](state, brand) {
+      state.selectedBrand = state.selectedBrand == brand ? '' : brand;
     }
   },
   getters: {

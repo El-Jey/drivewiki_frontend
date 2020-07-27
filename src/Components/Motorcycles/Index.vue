@@ -82,7 +82,12 @@
 <script>
 import AppFooter from "./../Common/AppFooter";
 import config from "../../config";
-import { VEHICLES_LIST } from "../../store/mutation-types";
+import {
+    VEHICLES_LIST,
+    SELECTED_BRAND,
+    MOTORCYCLE_DETAILS,
+    IS_EMPTY_MOTORCYCLE_DETAILS,
+} from "../../store/mutation-types";
 
 const axios = require("axios").default;
 
@@ -92,18 +97,35 @@ export default {
         return {
             imagesFolder: {
                 motorcycles: config.app.images_folder.motorcycles,
-                icons: config.app.images_folder.icons
-            }
+                icons: config.app.images_folder.icons,
+            },
+            previousRoute: "",
         };
+    },
+    beforeRouteEnter(to, from, next) {
+        next((vm) => {
+            vm.previousRoute = from.name || "";
+
+            if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
+                vm.$store.commit(SELECTED_BRAND, to.query.brand);
+                vm.getModelDetails(to.query.brand, to.query.model);
+            }
+        });
+    },
+    beforeRouteUpdate(to, from, next) {
+        if (!this.$helpers.isEmptyObject(to.query)) {
+            this.getModelDetails(to.query.brand, to.query.model);
+            next();
+        }
     },
     mounted() {
         axios
             .get("/public/motorcycles/list")
-            .then(response => {
+            .then((response) => {
                 this.$store.commit(VEHICLES_LIST, response.data.result);
                 return;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 this.$store.commit(VEHICLES_LIST, null);
                 return;
@@ -115,7 +137,45 @@ export default {
         },
         isEmptyMotorcycleInfo() {
             return this.$store.state.isEmptyMotorcycleModelDetails;
-        }
-    }
+        },
+    },
+    methods: {
+        getModelDetails(brand, model) {
+            if (this.selectedModel == model) {
+                return;
+            }
+
+            this.selectedModel = model;
+
+            axios
+                .get("/public/motorcycles/model", {
+                    params: { brand: brand, model: model },
+                })
+                .then((response) => {
+                    if (!response.data.status) {
+                        console.log(
+                            "Error in retrieving data: \r\n",
+                            response.data
+                        ); // TODO: обработка всех ошибок
+                        this.$store.commit(MOTORCYCLE_DETAILS, null);
+                        this.$store.commit(IS_EMPTY_MOTORCYCLE_DETAILS, true);
+                        return;
+                    }
+
+                    this.$store.commit(
+                        MOTORCYCLE_DETAILS,
+                        response.data.result
+                    );
+                    this.$store.commit(IS_EMPTY_MOTORCYCLE_DETAILS, false);
+                    document
+                        .getElementById("left_sidebar")
+                        .classList.remove("open");
+                    return;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+    },
 };
 </script>

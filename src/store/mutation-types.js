@@ -4,3 +4,4 @@ export const CAR_DETAILS                    = 'carDetails';
 export const IS_EMPTY_CAR_DETAILS           = 'isEmptyCarModelDetails'; // В базе нет информации о выбранной модели автомобиля
 export const MOTORCYCLE_DETAILS             = 'motorcycleDetails';
 export const IS_EMPTY_MOTORCYCLE_DETAILS    = 'isEmptyMotorcycleModelDetails'; // В базе нет информации о выбранной модели мотоцикла
+export const SELECTED_BRAND                 = 'selectedBrand';

@@ -295,30 +295,32 @@ div#left_sidebar {
   margin: .5em 0;
 }
 
-#left_sidebar .sidebar-dropdown a span {
+#left_sidebar .sidebar-dropdown>button span {
   padding-left: 1.5em;
 }
 
-#left_sidebar .sidebar-dropdown.dropdown-active>a>span {
+#left_sidebar .sidebar-dropdown.dropdown-active>button>span {
   opacity: .5;
 }
 
-#left_sidebar .sidebar-dropdown>a {
+#left_sidebar .sidebar-dropdown>button {
+  background: none;
   display: block;
   color: inherit;
   font-weight: 600;
   position: relative;
+  text-align: left;
   text-decoration: none;
   width: 100%;
 }
 
-#left_sidebar .sidebar-dropdown>a>.caret-icon {
+#left_sidebar .sidebar-dropdown>button>.caret-icon {
   height: 100%;
   left: 0;
   position: absolute;
 }
 
-#left_sidebar .sidebar-dropdown>a:hover,
+#left_sidebar .sidebar-dropdown>button:hover,
 #left_sidebar .sidebar-list>.sidebar-dropdown>ul>.dropdown-item:hover {
   cursor: pointer;
   color: rgba(0, 0, 0, .5);

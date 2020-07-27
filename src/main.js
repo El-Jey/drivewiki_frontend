@@ -3,13 +3,25 @@ import App from './Components/App.vue';
 
 import router from './router';
 import store from './store';
-import i18n from './localization';
+import { i18n } from './localization';
 
 import CustomPlugin from './CustomPlugin';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCaretRight, faCaretDown, faSearch, faBars, faBan, faTimes, faSlidersH } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  library
+} from '@fortawesome/fontawesome-svg-core';
+import {
+  faCaretRight,
+  faCaretDown,
+  faSearch,
+  faBars,
+  faBan,
+  faTimes,
+  faSlidersH
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  FontAwesomeIcon
+} from '@fortawesome/vue-fontawesome';
 
 import './assets/styles/main.scss';
 

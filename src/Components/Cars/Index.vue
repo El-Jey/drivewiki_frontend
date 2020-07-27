@@ -78,7 +78,12 @@
 <script>
 import AppFooter from "./../Common/AppFooter";
 import config from "../../config";
-import { VEHICLES_LIST } from "../../store/mutation-types";
+import {
+    VEHICLES_LIST,
+    SELECTED_BRAND,
+    CAR_DETAILS,
+    IS_EMPTY_CAR_DETAILS
+} from "../../store/mutation-types";
 
 const axios = require("axios").default;
 
@@ -90,21 +95,24 @@ export default {
                 cars: config.app.images_folder.cars,
                 icons: config.app.images_folder.icons,
             },
-        };
+            previousRoute: ''
+        }
     },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
-            if (vm.$helpers.isEmptyObject(vm.$route.query)) {
-                console.log("Object is empty");
-                return;
+            vm.previousRoute = from.name || '';
+
+            if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
+                vm.$store.commit(SELECTED_BRAND, to.query.brand);
+                vm.getModelDetails(to.query.brand, to.query.model);
             }
-            console.log("Object has properties");
         });
     },
     beforeRouteUpdate(to, from, next) {
-        console.log(this.$route.query);
-        console.log(to);
-        next();
+        if (!this.$helpers.isEmptyObject(to.query)) {
+            this.getModelDetails(to.query.brand, to.query.model);
+            next();
+        }
     },
     mounted() {
         axios
@@ -127,5 +135,40 @@ export default {
             return this.$store.state.isEmptyCarModelDetails;
         },
     },
+    methods: {
+        getModelDetails(brand, model) {
+            if (this.selectedModel == model) {
+                return;
+            }
+
+            this.selectedModel = model;
+
+            axios
+                .get("/public/cars/model", {
+                    params: { brand: brand, model: model },
+                })
+                .then((response) => {
+                    if (!response.data.status) {
+                        console.log(
+                            "Error in retrieving data: \r\n",
+                            response.data
+                        ); // TODO: обработка всех ошибок
+                        this.$store.commit(CAR_DETAILS, null);
+                        this.$store.commit(IS_EMPTY_CAR_DETAILS, true);
+                        return;
+                    }
+
+                    this.$store.commit(CAR_DETAILS, response.data.result);
+                    this.$store.commit(IS_EMPTY_CAR_DETAILS, false);
+                    document
+                        .getElementById("left_sidebar")
+                        .classList.remove("open");
+                    return;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+    }
 };
 </script>
