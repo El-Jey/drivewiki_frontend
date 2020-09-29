@@ -1,5 +1,4 @@
-/node_modules
-/images
-/.babelrc
-/.eslintrc.json
-/LICENSE
+node_modules
+.babelrc
+.eslintrc.json
+LICENSE
