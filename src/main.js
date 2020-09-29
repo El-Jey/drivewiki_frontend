@@ -11,13 +11,14 @@ import {
   library
 } from '@fortawesome/fontawesome-svg-core';
 import {
-  faCaretRight,
-  faCaretDown,
-  faSearch,
-  faBars,
   faBan,
-  faTimes,
-  faSlidersH
+  faBars,
+  faCaretDown,
+  faCaretRight,
+  faChevronDown,
+  faSearch,
+  faSlidersH,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon
@@ -25,7 +26,7 @@ import {
 
 import './assets/styles/main.scss';
 
-library.add(faCaretRight, faCaretDown, faSearch, faBars, faBan, faTimes, faSlidersH);
+library.add(faBan, faBars, faCaretDown, faCaretRight, faCaretRight, faChevronDown, faSearch, faSlidersH, faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(CustomPlugin);

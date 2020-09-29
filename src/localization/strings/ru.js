@@ -5,7 +5,9 @@ export const RUSSIAN = {
   },
   header: {
     cars: "Автомобили",
-    motorcycles: "Мотоциклы"
+    vehiclesError: "Нет данных о транспортных средствах",
+    motorcycles: "Мотоциклы",
+    vehicle: "Вид транспорта"
   },
   main_content: {
     empty_details_info: "Мы искали везде и, к сожалению, ничего не нашли",
@@ -13,5 +15,8 @@ export const RUSSIAN = {
     home_welcome: "Добро пожаловать на главную страницу Drive Wiki!",
     home_link: "На главную",
     report_about_problem: "Или сообщите нам о проблеме"
+  },
+  loading: {
+    language: "Загрузка языка...."
   }
 }

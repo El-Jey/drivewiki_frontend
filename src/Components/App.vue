@@ -1,5 +1,6 @@
 <template>
     <div>
+        <loading-circle v-if="loadingCircle"></loading-circle>
         <app-header></app-header>
 
         <main class="site-main h-100">
@@ -17,6 +18,7 @@
 <script>
 import AppHeader from "./Common/AppHeader";
 import AppLeftBar from "./Common/AppLeftBar";
+import LoadingCircle from "./Common/LoadingCircle";
 import { TOGGLE_SITE_SEARCH } from "../store/mutation-types";
 
 const axios = require("axios").default;
@@ -25,15 +27,20 @@ export default {
     components: {
         AppHeader,
         AppLeftBar,
+        LoadingCircle,
     },
     computed: {
         isSearchOpened() {
             return this.$store.getters.isSearchOpened;
         },
+        loadingCircle() {
+            let loading = this.$store.state.loadingCircle;
+            return loading;
+        },
     },
     mounted() {
         document.body.addEventListener("click", (e) => {
-            if (e.target.closest(".nav-search-container")) {
+            if (e.target.closest(".top-search-container")) {
                 return;
             }
             if (!this.isSearchOpened) {
@@ -72,10 +79,6 @@ export default {
                 }
             }
         });
-    },
-    created() {
-        // TODO: получить запросом типы транспортных средств
-        console.log("created");
     },
 };
 </script>

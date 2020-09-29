@@ -8,7 +8,7 @@
                         <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.car')} ) }}</span>
                     </p>
                 </h5>
-                <h5 v-else="isEmptyCarInfo">
+                <h5 v-else>
                     <p>{{ $t( 'main_content.empty_details_info') }}</p>
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
@@ -20,7 +20,7 @@
                 </h5>
             </div>
         </div>
-        <div v-else="carInfo" class="info-container">
+        <div v-else class="info-container">
             <div class="main-info info">
                 <p
                     v-if="carInfo.totalInfo.description"
@@ -79,10 +79,12 @@
 import AppFooter from "./../Common/AppFooter";
 import config from "../../config";
 import {
-    VEHICLES_LIST,
-    SELECTED_BRAND,
     CAR_DETAILS,
-    IS_EMPTY_CAR_DETAILS
+    IS_EMPTY_CAR_DETAILS,
+    SELECTED_BRAND,
+    SET_CURRENT_VEHICLE_TYPE,
+    VEHICLES_MODELS_LIST,
+    VEHICLES_SETTINGS,
 } from "../../store/mutation-types";
 
 const axios = require("axios").default;
@@ -95,12 +97,41 @@ export default {
                 cars: config.app.images_folder.cars,
                 icons: config.app.images_folder.icons,
             },
-            previousRoute: ''
-        }
+            previousRoute: "",
+        };
     },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
-            vm.previousRoute = from.name || '';
+            // vm.previousRoute = from.name || "";
+            if (!vm.$store.state.vehiclesSettings) {
+                vm.$helpers
+                    .getVehicleSettings()
+                    .then((vehiclesSettings) => {
+                        vm.$store.commit(VEHICLES_SETTINGS, vehiclesSettings);
+
+                        let currentVehicleType = vm.$helpers.getCurrentVehicleType(
+                            vehiclesSettings,
+                            to.path
+                        ); // The currently viewed section of site
+                        vm.$store.commit(
+                            SET_CURRENT_VEHICLE_TYPE,
+                            currentVehicleType
+                        );
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                let currentVehicleType = vm.$helpers.getCurrentVehicleType(
+                    vm.$store.state.vehiclesSettings,
+                    to.path
+                ); // The currently viewed section of site
+                vm.$store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
+            }
+
+            if (from.name) {  // The route was changed, but the page was not updated
+                document.getElementById("vehiclesNavList").classList.toggle("open");
+            }
 
             if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
                 vm.$store.commit(SELECTED_BRAND, to.query.brand);
@@ -118,12 +149,12 @@ export default {
         axios
             .get("/public/cars/list")
             .then((response) => {
-                this.$store.commit(VEHICLES_LIST, response.data.result);
+                this.$store.commit(VEHICLES_MODELS_LIST, response.data.result);
                 return;
             })
             .catch((error) => {
                 console.log(error);
-                this.$store.commit(VEHICLES_LIST, null);
+                this.$store.commit(VEHICLES_MODELS_LIST, null);
                 return;
             });
     },
@@ -169,6 +200,6 @@ export default {
                     console.log(error);
                 });
         },
-    }
+    },
 };
 </script>

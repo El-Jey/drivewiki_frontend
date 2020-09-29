@@ -11,18 +11,31 @@
                 </button>
             </div>
 
-            <nav class="topbar-nav" :class="$route.name == 'Home' ? 'p-l-1' : ''">
-                <ul>
-                    <li>
-                        <router-link to="/cars">{{ $t('header.cars') }}</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/motorcycles">{{ $t('header.motorcycles') }}</router-link>
-                    </li>
-                </ul>
+            <div class="topbar-right" :class="$route.name == 'Home' ? 'p-l-1' : ''">
+                <div class="vehicles-nav_container">
+                    <button class="vehicles-nav_toggle" @click="vehiclesNavListToggle()">
+                        <span v-if="currentVehicleType">{{ $t('header.' + currentVehicleType[0].translate_key) }}</span>
+
+                        <span v-else>{{ $t('header.vehicle') }}</span>
+                        <font-awesome-icon :icon="['fas', 'chevron-down']" />
+                    </button>
+                    <ul v-if="vehiclesSettings" class="vehicles-nav_list" id="vehiclesNavList">
+                        <li v-for="(vehicelData) in vehiclesSettings" :key="vehicelData.route">
+                            <router-link
+                                :to="vehicelData.route"
+                            >{{ $t('header.' + vehicelData.translate_key) }}</router-link>
+                        </li>
+                    </ul>
+
+                    <ul v-else class="vehicles-nav_list" id="vehiclesNavList">
+                        <li>
+                            <span>{{ $t('header.vehiclesError') }}</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <div>
-                    <div class="nav-search-container">
+                    <div class="topbar-search-container">
                         <div class="search-n-settings" :class="!isSearchOpened ? '' : 'open'">
                             <div class="search-input-container">
                                 <input
@@ -32,6 +45,7 @@
                                     @input="searchVehicles()"
                                     type="text"
                                     placeholder="Поиск по сайту"
+                                    autocomplete="off"
                                 />
                                 <transition name="fade-clear-search">
                                     <div
@@ -73,10 +87,7 @@
                                             name="search-brand-dropdown"
                                             class="dropdown-models"
                                         >
-                                            <li
-                                                v-for="(model) in manufacturer.models"
-                                                :key="model"
-                                            >
+                                            <li v-for="(model) in manufacturer.models" :key="model">
                                                 <a
                                                     :href="'?brand=' + manufacturer.brand + '&model=' + model"
                                                     :target="_self"
@@ -105,10 +116,7 @@
                                             name="search-brand-dropdown"
                                             class="dropdown-models"
                                         >
-                                            <li
-                                                v-for="(model) in manufacturer.models"
-                                                :key="model"
-                                            >
+                                            <li v-for="(model) in manufacturer.models" :key="model">
                                                 <router-link
                                                     :to="'?brand=' + manufacturer.brand + '&model=' + model"
                                                 >{{ model }}</router-link>
@@ -137,7 +145,7 @@
 
                     <lang-changer></lang-changer>
                 </div>
-            </nav>
+            </div>
         </div>
     </header>
 </template>
@@ -151,7 +159,7 @@ const config = require("../../config");
 
 export default {
     components: {
-        LangChanger
+        LangChanger,
     },
     data() {
         return {
@@ -159,25 +167,36 @@ export default {
             appIcon: config.app.icon,
             searchQuery: "",
             searchResults: null,
-            selectedBrand: null
+            selectedBrand: null,
+            debug: null,
         };
     },
     computed: {
         cars() {
             return this.$store.state.cars;
         },
+        currentVehicleType() {
+            return this.$store.state.currentVehicleType;
+        },
         isSearchOpened() {
             return this.$store.getters.isSearchOpened;
-        }
+        },
+        vehiclesSettings() {
+            return this.$store.state.vehiclesSettings;
+        },
     },
     methods: {
+        clearSearchField() {
+            this.searchQuery = "";
+            document.getElementById("global_search").focus();
+        },
         searchVehicles() {
             if (this.searchQuery != "") {
                 axios
                     .post("/public/vehicles/search", {
-                        search: this.searchQuery
+                        search: this.searchQuery,
                     })
-                    .then(response => {
+                    .then((response) => {
                         if (!response.data.status) {
                             console.log(response.data);
                             return (this.searchResults = null);
@@ -186,11 +205,19 @@ export default {
                         console.log(response.data.result);
                         return (this.searchResults = response.data.result);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error.response.data);
                         return (this.searchResults = null);
                     });
             }
+        },
+        setCursorOnTail(e) {
+            e.target.selectionStart = e.target.selectionEnd =
+                e.target.value.length;
+        },
+        toggleBrandList(brand, vehicleType) {
+            return (this.selectedBrand =
+                this.selectedBrand == brand ? "" : brand);
         },
         toggleLeftBar() {
             document.getElementById("left_sidebar").classList.toggle("open");
@@ -201,18 +228,9 @@ export default {
                 document.getElementById("global_search").focus();
             }
         },
-        setCursorOnTail(e) {
-            e.target.selectionStart = e.target.selectionEnd =
-                e.target.value.length;
+        vehiclesNavListToggle() {
+            document.getElementById("vehiclesNavList").classList.toggle("open");
         },
-        clearSearchField() {
-            this.searchQuery = "";
-            document.getElementById("global_search").focus();
-        },
-        toggleBrandList(brand, vehicleType) {
-            return (this.selectedBrand =
-                this.selectedBrand == brand ? "" : brand);
-        }
-    }
+    },
 };
 </script>

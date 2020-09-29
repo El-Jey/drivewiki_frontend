@@ -83,10 +83,12 @@
 import AppFooter from "./../Common/AppFooter";
 import config from "../../config";
 import {
-    VEHICLES_LIST,
-    SELECTED_BRAND,
-    MOTORCYCLE_DETAILS,
     IS_EMPTY_MOTORCYCLE_DETAILS,
+    MOTORCYCLE_DETAILS,
+    SELECTED_BRAND,
+    SET_CURRENT_VEHICLE_TYPE,
+    VEHICLES_MODELS_LIST,
+    VEHICLES_SETTINGS,
 } from "../../store/mutation-types";
 
 const axios = require("axios").default;
@@ -104,7 +106,36 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
-            vm.previousRoute = from.name || "";
+            // vm.previousRoute = from.name || "";
+            if (!vm.$store.state.vehiclesSettings) {
+                vm.$helpers
+                    .getVehicleSettings()
+                    .then((vehiclesSettings) => {
+                        vm.$store.commit(VEHICLES_SETTINGS, vehiclesSettings);
+
+                        let currentVehicleType = vm.$helpers.getCurrentVehicleType(
+                            vehiclesSettings,
+                            to.path
+                        ); // The currently viewed section of site
+                        vm.$store.commit(
+                            SET_CURRENT_VEHICLE_TYPE,
+                            currentVehicleType
+                        );
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                let currentVehicleType = vm.$helpers.getCurrentVehicleType(
+                    vm.$store.state.vehiclesSettings,
+                    to.path
+                ); // The currently viewed section of site
+                vm.$store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
+            }
+
+            if (from.name) {  // The route was changed, but the page was not updated
+                document.getElementById("vehiclesNavList").classList.toggle("open");
+            }
 
             if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
                 vm.$store.commit(SELECTED_BRAND, to.query.brand);
@@ -122,21 +153,21 @@ export default {
         axios
             .get("/public/motorcycles/list")
             .then((response) => {
-                this.$store.commit(VEHICLES_LIST, response.data.result);
+                this.$store.commit(VEHICLES_MODELS_LIST, response.data.result);
                 return;
             })
             .catch((error) => {
                 console.log(error);
-                this.$store.commit(VEHICLES_LIST, null);
+                this.$store.commit(VEHICLES_MODELS_LIST, null);
                 return;
             });
     },
     computed: {
-        motorcycleInfo() {
-            return this.$store.state.motorcycleModelDetails;
-        },
         isEmptyMotorcycleInfo() {
             return this.$store.state.isEmptyMotorcycleModelDetails;
+        },
+        motorcycleInfo() {
+            return this.$store.state.motorcycleModelDetails;
         },
     },
     methods: {

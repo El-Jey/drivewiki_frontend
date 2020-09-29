@@ -1,24 +1,9 @@
-// import Vue from 'vue';
-// import VueI18n from 'vue-i18n';
-// import { ENGLISH } from './strings/en';
-// import { RUSSIAN } from './strings/ru';
-
-// Vue.use(VueI18n);
-
-// const i18n = new VueI18n({
-//   locale: 'ru',
-//   messages: TRANSLATIONS
-// });
-
-// export default i18n;
-
-
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import {
   RUSSIAN
 } from './strings/ru';
-import axios from 'axios'
+import axios from 'axios';
 
 Vue.use(VueI18n);
 

@@ -5,7 +5,9 @@ export const ENGLISH = {
   },
   header: {
     cars: "Cars",
-    motorcycles: "Motorcycles"
+    vehiclesError: "No vehicle data",
+    motorcycles: "Motorcycles",
+    vehicle: "Vehicle"
   },
   main_content: {
     empty_details_info: "We searched everywhere and, unfortunately, did not find anything",
@@ -13,5 +15,8 @@ export const ENGLISH = {
     home_welcome: "Welcome on Drive Wiki home page!",
     home_link: "Home",
     report_about_problem: "Or let us know about the problem."
+  },
+  loading: {
+    language: "Loading language..."
   }
 }

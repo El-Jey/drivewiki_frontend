@@ -50,21 +50,8 @@ const axios = require("axios").default;
 export default {
     data() {
         return {
-            // selectedBrand: "",
-            // selectedModel: "",
             vehicleTypes: null,
         };
-    },
-    created() {
-        axios
-            .get("public/vehicles/types")
-            .then((response) => {
-                console.log(response.data);
-                return;
-            })
-            .catch((error) => {
-                console.log(error);
-            });
     },
     computed: {
         vehicles() {
@@ -77,7 +64,7 @@ export default {
     methods: {
         toggleLeftSideDropList(brand, e) {
             return this.$store.commit(SELECTED_BRAND, brand);
-        }
-    }
-}
+        },
+    },
+};
 </script>
