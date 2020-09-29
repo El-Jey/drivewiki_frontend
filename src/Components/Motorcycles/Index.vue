@@ -8,7 +8,7 @@
                         <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.motorcycle')} ) }}</span>
                     </p>
                 </h5>
-                <h5 v-else="isEmptyMotorcycleInfo">
+                <h5 v-else>
                     <p>{{ $t( 'main_content.empty_details_info') }}</p>
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
@@ -20,14 +20,14 @@
                 </h5>
             </div>
         </div>
-        <div v-else="motorcycleInfo" class="info-container">
+        <div v-else class="info-container">
             <div class="main-info info">
                 <p
                     v-if="motorcycleInfo.totalInfo.description"
                     v-html="motorcycleInfo.totalInfo.description"
                 >{{ motorcycleInfo.totalInfo.description }}</p>
 
-                <div v-for="(paragraph) in motorcycleInfo.paragraphs">
+                <div v-for="(paragraph, index) in motorcycleInfo.paragraphs" :key="index">
                     <h3 v-if="paragraph.title">{{ paragraph.title }}</h3>
                     <p v-html="paragraph.description">{{ paragraph.description }}</p>
                 </div>
