@@ -100,48 +100,8 @@ export default {
             imagesFolder: {
                 motorcycles: config.app.images_folder.motorcycles,
                 icons: config.app.images_folder.icons,
-            },
-            previousRoute: "",
+            }
         };
-    },
-    beforeRouteEnter(to, from, next) {
-        next((vm) => {
-            // vm.previousRoute = from.name || "";
-            if (!vm.$store.state.vehiclesSettings) {
-                vm.$helpers
-                    .getVehicleSettings()
-                    .then((vehiclesSettings) => {
-                        vm.$store.commit(VEHICLES_SETTINGS, vehiclesSettings);
-
-                        let currentVehicleType = vm.$helpers.getCurrentVehicleType(
-                            vehiclesSettings,
-                            to.path
-                        ); // The currently viewed section of site
-                        vm.$store.commit(
-                            SET_CURRENT_VEHICLE_TYPE,
-                            currentVehicleType
-                        );
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            } else {
-                let currentVehicleType = vm.$helpers.getCurrentVehicleType(
-                    vm.$store.state.vehiclesSettings,
-                    to.path
-                ); // The currently viewed section of site
-                vm.$store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
-            }
-
-            if (from.name) {  // The route was changed, but the page was not updated
-                document.getElementById("vehiclesNavList").classList.toggle("open");
-            }
-
-            if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
-                vm.$store.commit(SELECTED_BRAND, to.query.brand);
-                vm.getModelDetails(to.query.brand, to.query.model);
-            }
-        });
     },
     beforeRouteUpdate(to, from, next) {
         if (!this.$helpers.isEmptyObject(to.query)) {

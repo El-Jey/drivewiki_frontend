@@ -2,9 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import * as types from './mutation-types';
 
+const axios = require("axios").default;
+
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     carModelDetails: null,
     currentVehicleType: null,
@@ -47,12 +49,27 @@ export default new Vuex.Store({
     [types.TOGGLE_SITE_SEARCH](state) {
       state.isSearchOpened = !state.isSearchOpened;
     },
-    [types.VEHICLES_SETTINGS](state, data) {
-      state.vehiclesSettings = data;
-    },
     [types.VEHICLES_MODELS_LIST](state, vehiclesList) {
       state.vehicles = vehiclesList;
+    },
+    [types.VEHICLES_SETTINGS](state, data) {
+      state.vehiclesSettings = data;
     }
+  },
+  actions: {
+    getVehiclesSettings(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/public/vehicles/types")
+          .then((response) => {
+            context.commit(types.VEHICLES_SETTINGS, response.data.result);
+            return resolve();
+          })
+          .catch((error) => {
+            return reject(error);
+          });
+      });
+    },
   },
   getters: {
     isSearchOpened: state => {
@@ -60,3 +77,5 @@ export default new Vuex.Store({
     }
   }
 })
+
+export default store;

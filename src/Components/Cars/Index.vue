@@ -96,13 +96,11 @@ export default {
             imagesFolder: {
                 cars: config.app.images_folder.cars,
                 icons: config.app.images_folder.icons,
-            },
-            previousRoute: "",
+            }
         };
     },
-    beforeRouteEnter(to, from, next) {
+   /* beforeRouteEnter(to, from, next) {
         next((vm) => {
-            // vm.previousRoute = from.name || "";
             if (!vm.$store.state.vehiclesSettings) {
                 vm.$helpers
                     .getVehicleSettings()
@@ -138,7 +136,7 @@ export default {
                 vm.getModelDetails(to.query.brand, to.query.model);
             }
         });
-    },
+    },*/
     beforeRouteUpdate(to, from, next) {
         if (!this.$helpers.isEmptyObject(to.query)) {
             this.getModelDetails(to.query.brand, to.query.model);

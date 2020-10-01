@@ -7,5 +7,6 @@ export const SELECTED_BRAND                 = 'selectedBrand';
 export const SET_LOADING_DATA               = 'setLoadingData';
 export const SET_CURRENT_VEHICLE_TYPE       = 'setCurrentVehicleType';
 export const TOGGLE_SITE_SEARCH             = 'toggleSearchOnSite';
-export const VEHICLES_SETTINGS              = 'vehiclesSettings';
 export const VEHICLES_MODELS_LIST           = 'vehiclesModelsList';
+
+export const VEHICLES_SETTINGS = 'vehiclesSettings';

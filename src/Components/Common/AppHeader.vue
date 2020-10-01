@@ -14,16 +14,18 @@
             <div class="topbar-right" :class="$route.name == 'Home' ? 'p-l-1' : ''">
                 <div class="vehicles-nav_container">
                     <button class="vehicles-nav_toggle" @click="vehiclesNavListToggle()">
-                        <span v-if="currentVehicleType">{{ $t('header.' + currentVehicleType[0].translate_key) }}</span>
+                        <div>
+                            <span v-if="currentVehicleType">{{ $t('header.' + currentVehicleType[0].translate_key) }}</span>
 
-                        <span v-else>{{ $t('header.vehicle') }}</span>
-                        <font-awesome-icon :icon="['fas', 'chevron-down']" />
+                            <span v-else>{{ $t('header.vehicle') }}</span>
+                            <font-awesome-icon :icon="['fas', 'chevron-down']" />
+                        </div>
                     </button>
                     <ul v-if="vehiclesSettings" class="vehicles-nav_list" id="vehiclesNavList">
-                        <li v-for="(vehicelData) in vehiclesSettings" :key="vehicelData.route">
+                        <li v-for="(vehicleData) in vehiclesSettings" :key="vehicleData.route">
                             <router-link
-                                :to="vehicelData.route"
-                            >{{ $t('header.' + vehicelData.translate_key) }}</router-link>
+                                :to="vehicleData.route"
+                            >{{ $t('header.' + vehicleData.translate_key) }}</router-link>
                         </li>
                     </ul>
 

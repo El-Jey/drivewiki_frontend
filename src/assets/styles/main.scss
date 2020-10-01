@@ -527,6 +527,7 @@ footer {
             }
 
             .fa-chevron-down {
+              height: inherit;
               width: .7em;
             }
           }
@@ -541,7 +542,7 @@ footer {
               flex-direction: column;
               height: auto;
               max-height: 250px;
-              max-width: 200px;
+              max-width: 250px;
               overflow-y: scroll;
               position: absolute;
               width: 100%;

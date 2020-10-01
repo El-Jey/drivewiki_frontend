@@ -21,8 +21,6 @@ import AppLeftBar from "./Common/AppLeftBar";
 import LoadingCircle from "./Common/LoadingCircle";
 import { TOGGLE_SITE_SEARCH } from "../store/mutation-types";
 
-const axios = require("axios").default;
-
 export default {
     components: {
         AppHeader,
