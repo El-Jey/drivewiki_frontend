@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         isSearchOpened() {
-            return this.$store.getters.isSearchOpened;
+            return this.$store.getters.isSiteSearchOpened;
         },
         loadingCircle() {
             let loading = this.$store.state.loadingCircle;
@@ -38,7 +38,7 @@ export default {
     },
     mounted() {
         document.body.addEventListener("click", (e) => {
-            if (e.target.closest(".top-search-container")) {
+            if (e.target.closest(".topbar-search-container")) {
                 return;
             }
             if (!this.isSearchOpened) {

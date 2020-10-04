@@ -5,17 +5,27 @@
                 <h5 v-if="!isEmptyMotorcycleInfo">
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
-                        <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.motorcycle')} ) }}</span>
+                        <span>{{
+                            $t("main_content.choose_from_list", {
+                                vehicle: $t("common.motorcycle"),
+                            })
+                        }}</span>
                     </p>
                 </h5>
                 <h5 v-else>
-                    <p>{{ $t( 'main_content.empty_details_info') }}</p>
+                    <p>{{ $t("main_content.empty_details_info") }}</p>
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
-                        <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.motorcycle')} ) }}</span>
+                        <span>{{
+                            $t("main_content.choose_from_list", {
+                                vehicle: $t("common.motorcycle"),
+                            })
+                        }}</span>
                     </p>
                     <p>
-                        <span>{{ $t( 'main_content.report_about_problem') }}</span>
+                        <span>{{
+                            $t("main_content.report_about_problem")
+                        }}</span>
                     </p>
                 </h5>
             </div>
@@ -25,18 +35,28 @@
                 <p
                     v-if="motorcycleInfo.totalInfo.description"
                     v-html="motorcycleInfo.totalInfo.description"
-                >{{ motorcycleInfo.totalInfo.description }}</p>
+                >
+                    {{ motorcycleInfo.totalInfo.description }}
+                </p>
 
-                <div v-for="(paragraph, index) in motorcycleInfo.paragraphs" :key="index">
+                <div
+                    v-for="(paragraph, index) in motorcycleInfo.paragraphs"
+                    :key="index"
+                >
                     <h3 v-if="paragraph.title">{{ paragraph.title }}</h3>
-                    <p v-html="paragraph.description">{{ paragraph.description }}</p>
+                    <p v-html="paragraph.description">
+                        {{ paragraph.description }}
+                    </p>
                 </div>
             </div>
 
             <div class="common-info">
                 <img
                     v-if="motorcycleInfo.totalInfo.main_image"
-                    :src="imagesFolder.motorcycles + motorcycleInfo.totalInfo.main_image"
+                    :src="
+                        imagesFolder.motorcycles +
+                        motorcycleInfo.totalInfo.main_image
+                    "
                     :alt="motorcycleInfo.totalInfo.brand"
                 />
                 <table>
@@ -57,18 +77,18 @@
                             <td>
                                 <strong>Годы производства</strong>
                             </td>
-                            <td
-                                v-html="motorcycleInfo.totalInfo.years"
-                            >{{ motorcycleInfo.totalInfo.years }}</td>
+                            <td v-html="motorcycleInfo.totalInfo.years">
+                                {{ motorcycleInfo.totalInfo.years }}
+                            </td>
                         </tr>
 
                         <tr v-if="motorcycleInfo.totalInfo.class">
                             <td>
                                 <strong>Класс</strong>
                             </td>
-                            <td
-                                v-html="motorcycleInfo.totalInfo.class"
-                            >{{ motorcycleInfo.totalInfo.class }}</td>
+                            <td v-html="motorcycleInfo.totalInfo.class">
+                                {{ motorcycleInfo.totalInfo.class }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -100,8 +120,23 @@ export default {
             imagesFolder: {
                 motorcycles: config.app.images_folder.motorcycles,
                 icons: config.app.images_folder.icons,
-            }
+            },
         };
+    },
+    beforeRouteEnter(to, from, next) {
+        next((vm) => {
+            if (from.name) {
+                // The route was changed, but the page was not updated
+                document
+                    .getElementById("vehiclesNavList")
+                    .classList.toggle("open");
+            }
+
+            if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
+                vm.$store.commit(SELECTED_BRAND, to.query.brand);
+                vm.getModelDetails(to.query.brand, to.query.model);
+            }
+        });
     },
     beforeRouteUpdate(to, from, next) {
         if (!this.$helpers.isEmptyObject(to.query)) {

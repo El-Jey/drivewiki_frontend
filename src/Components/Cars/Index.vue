@@ -5,17 +5,27 @@
                 <h5 v-if="!isEmptyCarInfo">
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
-                        <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.car')} ) }}</span>
+                        <span>{{
+                            $t("main_content.choose_from_list", {
+                                vehicle: $t("common.car"),
+                            })
+                        }}</span>
                     </p>
                 </h5>
                 <h5 v-else>
-                    <p>{{ $t( 'main_content.empty_details_info') }}</p>
+                    <p>{{ $t("main_content.empty_details_info") }}</p>
                     <p class="arrow-left-notice">
                         <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
-                        <span>{{ $t( 'main_content.choose_from_list', {vehicle: $t('common.car')} ) }}</span>
+                        <span>{{
+                            $t("main_content.choose_from_list", {
+                                vehicle: $t("common.car"),
+                            })
+                        }}</span>
                     </p>
                     <p>
-                        <span>{{ $t( 'main_content.report_about_problem') }}</span>
+                        <span>{{
+                            $t("main_content.report_about_problem")
+                        }}</span>
                     </p>
                 </h5>
             </div>
@@ -25,11 +35,18 @@
                 <p
                     v-if="carInfo.totalInfo.description"
                     v-html="carInfo.totalInfo.description"
-                >{{ carInfo.totalInfo.description }}</p>
+                >
+                    {{ carInfo.totalInfo.description }}
+                </p>
 
-                <div v-for="(paragraph, index) in carInfo.paragraphs" :key="index">
+                <div
+                    v-for="(paragraph, index) in carInfo.paragraphs"
+                    :key="index"
+                >
                     <h3>{{ paragraph.title }}</h3>
-                    <p v-html="paragraph.description">{{ paragraph.description }}</p>
+                    <p v-html="paragraph.description">
+                        {{ paragraph.description }}
+                    </p>
                 </div>
             </div>
 
@@ -57,14 +74,18 @@
                             <td>
                                 <strong>Годы производства</strong>
                             </td>
-                            <td v-html="carInfo.totalInfo.years">{{ carInfo.totalInfo.years }}</td>
+                            <td v-html="carInfo.totalInfo.years">
+                                {{ carInfo.totalInfo.years }}
+                            </td>
                         </tr>
 
                         <tr v-if="carInfo.totalInfo.class">
                             <td>
                                 <strong>Класс</strong>
                             </td>
-                            <td v-html="carInfo.totalInfo.class">{{ carInfo.totalInfo.class }}</td>
+                            <td v-html="carInfo.totalInfo.class">
+                                {{ carInfo.totalInfo.class }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -96,39 +117,16 @@ export default {
             imagesFolder: {
                 cars: config.app.images_folder.cars,
                 icons: config.app.images_folder.icons,
-            }
+            },
         };
     },
-   /* beforeRouteEnter(to, from, next) {
+    beforeRouteEnter(to, from, next) {
         next((vm) => {
-            if (!vm.$store.state.vehiclesSettings) {
-                vm.$helpers
-                    .getVehicleSettings()
-                    .then((vehiclesSettings) => {
-                        vm.$store.commit(VEHICLES_SETTINGS, vehiclesSettings);
-
-                        let currentVehicleType = vm.$helpers.getCurrentVehicleType(
-                            vehiclesSettings,
-                            to.path
-                        ); // The currently viewed section of site
-                        vm.$store.commit(
-                            SET_CURRENT_VEHICLE_TYPE,
-                            currentVehicleType
-                        );
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            } else {
-                let currentVehicleType = vm.$helpers.getCurrentVehicleType(
-                    vm.$store.state.vehiclesSettings,
-                    to.path
-                ); // The currently viewed section of site
-                vm.$store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
-            }
-
-            if (from.name) {  // The route was changed, but the page was not updated
-                document.getElementById("vehiclesNavList").classList.toggle("open");
+            if (from.name) {
+                // The route was changed, but the page was not updated
+                document
+                    .getElementById("vehiclesNavList")
+                    .classList.toggle("open");
             }
 
             if (!vm.$helpers.isEmptyObject(vm.$route.query)) {
@@ -136,7 +134,7 @@ export default {
                 vm.getModelDetails(to.query.brand, to.query.model);
             }
         });
-    },*/
+    },
     beforeRouteUpdate(to, from, next) {
         if (!this.$helpers.isEmptyObject(to.query)) {
             this.getModelDetails(to.query.brand, to.query.model);

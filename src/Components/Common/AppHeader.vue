@@ -1,44 +1,74 @@
 <template>
     <header class="site-topbar">
         <div class="site-container">
-            <div v-if="$route.name == 'Home' ? false : true" class="topbar-left">
+            <div
+                v-if="$route.name == 'Home' ? false : true"
+                class="topbar-left"
+            >
                 <router-link to="/" class="topbar-brand">
                     <img :src="appIcon" alt />
                     <span>{{ appName }}</span>
                 </router-link>
-                <button @click="toggleLeftBar" type="button" class="leftbar-toggle-btn">
+                <button
+                    @click="toggleLeftBar"
+                    type="button"
+                    class="leftbar-toggle-btn"
+                >
                     <font-awesome-icon :icon="['fas', 'bars']" />
                 </button>
             </div>
 
-            <div class="topbar-right" :class="$route.name == 'Home' ? 'p-l-1' : ''">
+            <div
+                class="topbar-right"
+                :class="$route.name == 'Home' ? 'p-l-1' : ''"
+            >
                 <div class="vehicles-nav_container">
-                    <button class="vehicles-nav_toggle" @click="vehiclesNavListToggle()">
+                    <button
+                        class="vehicles-nav_toggle"
+                        @click="vehiclesNavListToggle()"
+                    >
                         <div>
-                            <span v-if="currentVehicleType">{{ $t('header.' + currentVehicleType[0].translate_key) }}</span>
+                            <span v-if="currentVehicleType">{{
+                                $t(
+                                    "header." +
+                                        currentVehicleType[0].translate_key
+                                )
+                            }}</span>
 
-                            <span v-else>{{ $t('header.vehicle') }}</span>
-                            <font-awesome-icon :icon="['fas', 'chevron-down']" />
+                            <span v-else>{{ $t("header.vehicle") }}</span>
+                            <font-awesome-icon
+                                :icon="['fas', 'chevron-down']"
+                            />
                         </div>
                     </button>
-                    <ul v-if="vehiclesSettings" class="vehicles-nav_list" id="vehiclesNavList">
-                        <li v-for="(vehicleData) in vehiclesSettings" :key="vehicleData.route">
-                            <router-link
-                                :to="vehicleData.route"
-                            >{{ $t('header.' + vehicleData.translate_key) }}</router-link>
+                    <ul
+                        v-if="vehiclesSettings"
+                        class="vehicles-nav_list"
+                        id="vehiclesNavList"
+                    >
+                        <li
+                            v-for="vehicleData in vehiclesSettings"
+                            :key="vehicleData.route"
+                        >
+                            <router-link :to="vehicleData.route">{{
+                                $t("header." + vehicleData.translate_key)
+                            }}</router-link>
                         </li>
                     </ul>
 
                     <ul v-else class="vehicles-nav_list" id="vehiclesNavList">
                         <li>
-                            <span>{{ $t('header.vehiclesError') }}</span>
+                            <span>{{ $t("header.vehiclesError") }}</span>
                         </li>
                     </ul>
                 </div>
 
                 <div>
                     <div class="topbar-search-container">
-                        <div class="search-n-settings" :class="!isSearchOpened ? '' : 'open'">
+                        <div
+                            class="search-n-settings"
+                            :class="!isSearchOpened ? '' : 'open'"
+                        >
                             <div class="search-input-container">
                                 <input
                                     id="global_search"
@@ -51,30 +81,50 @@
                                 />
                                 <transition name="fade-clear-search">
                                     <div
-                                        v-show="isSearchOpened && searchQuery != ''"
+                                        v-show="
+                                            isSearchOpened && searchQuery != ''
+                                        "
                                         class="clear-search"
                                         @click="clearSearchField"
                                     >
-                                        <font-awesome-icon :icon="['fas', 'times']" />
+                                        <font-awesome-icon
+                                            :icon="['fas', 'times']"
+                                        />
                                     </div>
                                 </transition>
                             </div>
                             <button class="settings-btn">
-                                <font-awesome-icon :icon="['fas', 'sliders-h']" />
+                                <font-awesome-icon
+                                    :icon="['fas', 'sliders-h']"
+                                />
                             </button>
                             <div class="search-results-container">
-                                <ul v-if="searchResults && searchResults.cars.length">
-                                    <h3>{{ $t('header.cars') }}</h3>
+                                <ul
+                                    v-if="
+                                        searchResults &&
+                                        searchResults.cars.length
+                                    "
+                                >
+                                    <h3>{{ $t("header.cars") }}</h3>
                                     <li
-                                        v-for="(manufacturer, index) in searchResults.cars"
+                                        v-for="(manufacturer,
+                                        index) in searchResults.cars"
                                         class="brands-dropdown"
                                         :key="index"
                                     >
                                         <button
-                                            @click="toggleBrandList(manufacturer.brand, manufacturer.brand)"
+                                            @click="
+                                                toggleBrandList(
+                                                    manufacturer.brand,
+                                                    manufacturer.brand
+                                                )
+                                            "
                                         >
                                             <font-awesome-icon
-                                                v-if="manufacturer.brand != selectedBrand"
+                                                v-if="
+                                                    manufacturer.brand !=
+                                                    selectedBrand
+                                                "
                                                 :icon="['fas', 'caret-right']"
                                             />
                                             <font-awesome-icon
@@ -85,43 +135,80 @@
                                         </button>
                                         <transition-group
                                             tag="ul"
-                                            v-if="manufacturer.brand == selectedBrand"
+                                            v-if="
+                                                manufacturer.brand ==
+                                                selectedBrand
+                                            "
                                             name="search-brand-dropdown"
                                             class="dropdown-models"
                                         >
-                                            <li v-for="(model) in manufacturer.models" :key="model">
+                                            <li
+                                                v-for="model in manufacturer.models"
+                                                :key="model"
+                                            >
                                                 <a
-                                                    :href="'?brand=' + manufacturer.brand + '&model=' + model"
+                                                    :href="
+                                                        '?brand=' +
+                                                        manufacturer.brand +
+                                                        '&model=' +
+                                                        model
+                                                    "
                                                     :target="_self"
-                                                >{{ model }}</a>
+                                                    >{{ model }}</a
+                                                >
                                             </li>
                                         </transition-group>
                                     </li>
                                 </ul>
 
-                                <ul v-if="searchResults && searchResults.motorcycles.length">
-                                    <h3>{{ $t('header.motorcycles') }}</h3>
+                                <ul
+                                    v-if="
+                                        searchResults &&
+                                        searchResults.motorcycles.length
+                                    "
+                                >
+                                    <h3>{{ $t("header.motorcycles") }}</h3>
                                     <li
-                                        v-for="(manufacturer, index) in searchResults.motorcycles"
+                                        v-for="(manufacturer,
+                                        index) in searchResults.motorcycles"
                                         class="brands-dropdown"
                                         :key="index"
                                     >
                                         <button
-                                            @click="toggleBrandList(manufacturer.brand, manufacturer.type)"
+                                            @click="
+                                                toggleBrandList(
+                                                    manufacturer.brand,
+                                                    manufacturer.type
+                                                )
+                                            "
                                         >
-                                            <font-awesome-icon :icon="['fas', 'caret-right']" />
+                                            <font-awesome-icon
+                                                :icon="['fas', 'caret-right']"
+                                            />
                                             {{ manufacturer.brand }}
                                         </button>
                                         <transition-group
                                             tag="ul"
-                                            v-if="manufacturer.brand == selectedBrand"
+                                            v-if="
+                                                manufacturer.brand ==
+                                                selectedBrand
+                                            "
                                             name="search-brand-dropdown"
                                             class="dropdown-models"
                                         >
-                                            <li v-for="(model) in manufacturer.models" :key="model">
+                                            <li
+                                                v-for="model in manufacturer.models"
+                                                :key="model"
+                                            >
                                                 <router-link
-                                                    :to="'?brand=' + manufacturer.brand + '&model=' + model"
-                                                >{{ model }}</router-link>
+                                                    :to="
+                                                        '?brand=' +
+                                                        manufacturer.brand +
+                                                        '&model=' +
+                                                        model
+                                                    "
+                                                    >{{ model }}</router-link
+                                                >
                                             </li>
                                         </transition-group>
                                     </li>
@@ -129,7 +216,10 @@
                             </div>
                         </div>
 
-                        <button class="toggle-search-btn" @click="toggleSearchField">
+                        <button
+                            class="toggle-search-btn"
+                            @click="toggleSearchField"
+                        >
                             <transition-group name="rotate-search-icon">
                                 <font-awesome-icon
                                     v-show="!isSearchOpened"
@@ -181,7 +271,7 @@ export default {
             return this.$store.state.currentVehicleType;
         },
         isSearchOpened() {
-            return this.$store.getters.isSearchOpened;
+            return this.$store.getters.isSiteSearchOpened;
         },
         vehiclesSettings() {
             return this.$store.state.vehiclesSettings;

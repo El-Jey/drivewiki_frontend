@@ -43,9 +43,6 @@ const store = new Vuex.Store({
     [types.SET_LOADING_DATA](state, data) {
       state.loadingData = data;
     },
-    [types.SET_CURRENT_VEHICLE_TYPE](state, data) {
-      state.currentVehicleType = data;
-    },
     [types.TOGGLE_SITE_SEARCH](state) {
       state.isSearchOpened = !state.isSearchOpened;
     },
@@ -57,7 +54,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getVehiclesSettings(context) {
+    [types.REQUEST_VEHICLES_SETTINGS](context) {
       return new Promise((resolve, reject) => {
         axios
           .get("/public/vehicles/types")
@@ -70,10 +67,21 @@ const store = new Vuex.Store({
           });
       });
     },
+    [types.SET_CURRENT_VEHICLE_TYPE](state, data) {
+      return new Promise((resolve, _reject) => {
+        state.currentVehicleType = data;
+        resolve();
+      });
+    },
   },
   getters: {
-    isSearchOpened: state => {
+    isSiteSearchOpened: state => {
       return state.isSearchOpened;
+    },
+    getCurrentVehicleType: state => route => {
+      return state.vehiclesSettings.filter((vehicle) => {
+        return vehicle.route === route || null;
+      });
     }
   }
 })

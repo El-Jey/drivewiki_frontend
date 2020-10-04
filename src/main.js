@@ -28,22 +28,35 @@ import {
 
 import './assets/styles/main.scss';
 
+import {
+  REQUEST_VEHICLES_SETTINGS,
+  SET_CURRENT_VEHICLE_TYPE
+} from "./store/mutation-types";
+
 library.add(faBan, faBars, faCaretDown, faCaretRight, faCaretRight, faChevronDown, faSearch, faSlidersH, faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(CustomPlugin);
 
-router.beforeEach((_to, _from, next) => {
+router.beforeEach((to, _from, next) => {
   if (!store.state.vehiclesSettings) {
-    store.dispatch('getVehiclesSettings')
-      .then(() => {
-        next(); // TODO: SET_CURRENT_VEHICLE_TYPE
+    store.dispatch(REQUEST_VEHICLES_SETTINGS)
+      .then(() => { // Settings saved to the store
+        let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
+        store.dispatch(SET_CURRENT_VEHICLE_TYPE, currentVehicleType)
+          .then(() => {
+            next();
+          });
       })
       .catch((err) => {
-        console.log(err); // TODO: на страницу ошибки, next('error')
+        console.log(err); // TODO: на страницу ошибки, примерно так: next('error')
       });
   } else {
-    next();
+    let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
+    store.dispatch(SET_CURRENT_VEHICLE_TYPE, currentVehicleType)
+      .then(() => {
+        next();
+      });
   }
 });
 
