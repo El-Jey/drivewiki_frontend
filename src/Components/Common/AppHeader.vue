@@ -28,12 +28,7 @@
                         @click="vehiclesNavListToggle()"
                     >
                         <div>
-                            <span v-if="currentVehicleType">{{
-                                $t(
-                                    "header." +
-                                        currentVehicleType[0].translate_key
-                                )
-                            }}</span>
+                            <span v-if="currentVehicleType">{{$t("header." + currentVehicleType[0].translate_key)}}</span>
 
                             <span v-else>{{ $t("header.vehicle") }}</span>
                             <font-awesome-icon
