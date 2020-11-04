@@ -5,7 +5,9 @@
 
         <main class="site-main h-100">
             <div class="site-container h-100">
-                <app-left-bar v-if="$route.name == 'Home' ? false : true"></app-left-bar>
+                <app-left-bar
+                    v-if="$route.name == 'Home' ? false : true"
+                ></app-left-bar>
 
                 <transition name="sideShift">
                     <router-view></router-view>
@@ -66,14 +68,19 @@ export default {
             touchEndX = e.changedTouches[0].clientX;
             let leftSidebar = document.getElementById("left_sidebar"),
                 diffX = touchStartX - touchEndX;
-            if (touchStartX <= 250) {
-                // Swipe right
-                if (diffX < 0 && !leftSidebar.classList.contains("open")) {
-                    leftSidebar.classList.add("open");
-                }
-                // Swipe left
-                else if (diffX > 0 && leftSidebar.classList.contains("open")) {
-                    leftSidebar.classList.remove("open");
+            if (leftSidebar) {
+                if (touchStartX <= 250) {
+                    // Swipe right
+                    if (diffX < 0 && !leftSidebar.classList.contains("open")) {
+                        leftSidebar.classList.add("open");
+                    }
+                    // Swipe left
+                    else if (
+                        diffX > 0 &&
+                        leftSidebar.classList.contains("open")
+                    ) {
+                        leftSidebar.classList.remove("open");
+                    }
                 }
             }
         });

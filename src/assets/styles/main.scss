@@ -119,136 +119,163 @@ main {
         }
       }
 
-      .topbar-search-container {
+      .utils-nav_container {
+        position: absolute;
+        z-index: 1;
         display: flex;
-        float: left;
-        height: 30px;
-        position: relative;
+        max-width: 100%;
+        padding: 0 .5em;
+        justify-content: flex-end;
+        right: 0;
 
-        >*,
-        #global_search {
-          height: 100%;
-        }
-
-        .search-n-settings {
+        .topbar-search-container {
           display: flex;
+          flex: 1 0 auto;
+          float: left;
+          height: 30px;
+          justify-content: flex-end;
           position: relative;
-          transition: width 0.5s ease-out;
-          width: 0;
 
-          &.open {
-            width: 300px;
-
-            .fa-times {
-              color: $button-primary-dark-text-color;
-            }
+          >*,
+          #global_search {
+            height: 100%;
           }
 
-          input {
-            background-color: rgba(255, 255, 255, 0.5);
-            color: #fff;
-            padding-left: 0.5em;
-            width: 100%;
-          }
-
-          .search-input-container {
+          .search-n-settings {
+            display: flex;
             position: relative;
-            width: calc(100% - 30px); // 30px - settings button width
+            transition: width 0.5s ease-out;
+            width: 0;
 
-            .clear-search {
-              cursor: pointer;
-              height: 100%;
-              position: absolute;
-              right: 0;
-              text-align: center;
-              top: 0;
-              width: 2em;
-
-              .fa-times {
-                height: inherit;
-                z-index: 3;
-              }
-            }
-          }
-
-          .settings-btn {
-            .fa-sliders-h {
-              font-size: 1em;
-              color: $button-primary-light-text-color;
-            }
-          }
-
-          .settings-btn {
-            cursor: pointer;
-            background-color: $button-primary-background-color;
-            border: none;
-            outline: none;
-            position: relative;
-            width: 30px;
-          }
-
-          .search-results-container {
-            background-color: #fff;
-            box-shadow: 0px 2px 3px $header-background-color,
-              -3px 2px 4px $header-background-color,
-              3px 2px 4px $header-background-color;
-            height: 150px;
-            overflow-y: scroll;
-            position: absolute;
-            top: 30px;
-            width: calc(100% - 30px); // 30px - settings button width
-
-            h3 {
-              background-image: linear-gradient(45deg, #666 25%, transparent 25%),
-                linear-gradient(-45deg, #666 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #666 75%),
-                linear-gradient(-45deg, transparent 75%, #666 75%);
-              background-size: 2px 2px;
-              background-position: 0 0, 1px 0, 1px -1px, 0px 1px;
-              padding: .2em 0 .2em .2em;
+            input {
+              background-color: rgba(255, 255, 255, 0.5);
+              color: #fff;
+              padding-left: 0.5em;
+              width: 100%;
             }
 
-            .brands-dropdown {
-              padding: .2em 0;
+            .search-input-container {
+              position: relative;
+              width: calc(100% - 30px); // 30px - settings button width
 
-              >button {
-                background-color: transparent;
+              .clear-search {
                 cursor: pointer;
-                padding-left: .2em;
-                text-align: left;
-                width: 100%;
+                height: 100%;
+                position: absolute;
+                right: 0;
+                text-align: center;
+                top: 0;
+                width: 2em;
+
+                .fa-times {
+                  height: inherit;
+                  z-index: 3;
+                }
               }
+            }
 
-              >ul {
-                &.models-dropdown {
-                  background-color: rgba(0, 0, 0, .1);
-                  list-style: none;
-                  padding-left: 1.6em;
+            .settings-btn {
+              .fa-sliders-h {
+                font-size: 1em;
+                color: $button-primary-light-text-color;
+              }
+            }
 
-                  a {
-                    color: #000;
-                    display: block;
-                    text-decoration: none;
-                    width: 100%;
+            .settings-btn {
+              cursor: pointer;
+              background-color: $button-primary-background-color;
+              border: none;
+              outline: none;
+              position: relative;
+              width: 30px;
+            }
+
+            .search-results-container {
+              height: 200px;
+              left: 0;
+              position: absolute;
+              top: 30px;
+              width: calc(100% - 30px); // 30px - settings button width
+
+              .search-results {
+                background-color: #fff;
+                box-shadow: 0px 2px 3px $header-background-color,
+                  -3px 2px 4px $header-background-color,
+                  3px 2px 4px $header-background-color;
+                height: 100%;
+                overflow-y: scroll;
+                width: 100%;
+
+                .empty-results {
+                  padding-top: 3em;
+                  text-align: center;
+                }
+
+                ul {
+                  h3 {
+                    background-color: $button-primary-background-color;
+                    color: $button-primary-light-text-color;
+                    padding: .2em;
+                  }
+
+                  .brands-dropdown {
+                    >button {
+                      align-items: center;
+                      background-color: #dee3e7;
+                      cursor: pointer;
+                      display: flex;
+                      padding: .2em;
+                      text-align: left;
+                      width: 100%;
+
+                      .fa-caret-right,
+                      .fa-caret-down {
+                        position: absolute;
+                      }
+
+                      span {
+                        margin-left: 1em;
+                      }
+                    }
+
+                    >ul {
+                      &.dropdown-models {
+                        list-style: none;
+
+                        li {
+                          border-bottom: 1px dotted black;
+                          background-color: #f5f5f5;
+                          padding: .2em .2em .2em 2em;
+
+                          a {
+                            color: #000;
+                            display: block;
+                            text-decoration: none;
+                            width: 100%;
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
           }
-        }
 
-        .toggle-search-btn {
-          cursor: pointer;
-          background-color: $button-primary-background-color;
-          border: none;
-          outline: none;
-          position: relative;
-          width: 30px;
+          .toggle-search-btn {
+            cursor: pointer;
+            background-color: $button-primary-background-color;
+            border: none;
+            flex: 0 0 auto;
+            outline: none;
+            position: relative;
+            width: 30px;
 
-          .fa-ban,
-          .fa-search {
-            font-size: 1em;
-            color: $button-primary-light-text-color;
+            .fa-ban,
+            .fa-search {
+              font-size: 1em;
+              color: $button-primary-light-text-color;
+            }
           }
         }
       }
@@ -571,16 +598,32 @@ footer {
           }
         }
 
-        >div {
+        >.vehicles-nav_container {
           max-width: 50%;
-          overflow-x: hidden;
+          overflow: hidden;
         }
 
-        .topbar-search-container {
-          .search-n-settings {
-            &.open {
-              background-color: rgb(255, 255, 255);
-              color: $button-primary-dark-text-color;
+        .utils-nav_container {
+          &.extended {
+            width: 100%;
+
+            .topbar-search-container {
+              position: initial;
+
+              .search-n-settings {
+                background-color: rgb(255, 255, 255);
+                position: initial;
+                width: 100%;
+
+                input {
+                  color: $button-primary-dark-text-color;
+                }
+
+                .search-results-container {
+                  padding: 0 .5em;
+                  width: 100%;
+                }
+              }
             }
           }
         }
@@ -664,10 +707,12 @@ footer {
       .topbar-right {
         padding-right: 1em;
 
-        .topbar-search-container {
-          .search-n-settings {
-            &.open {
-              max-width: 250px;
+        .utils-nav_container {
+          &.extended {
+            .topbar-search-container {
+              .search-n-settings {
+                width: 250px;
+              }
             }
           }
         }
@@ -704,10 +749,12 @@ footer {
   .site-topbar {
     .site-container {
       .topbar-right {
-        .topbar-search-container {
-          .search-n-settings {
-            &.open {
-              max-width: 300px;
+        .utils-nav_container {
+          &.extended {
+            .topbar-search-container {
+              .search-n-settings {
+                width: 300px;
+              }
             }
           }
         }
