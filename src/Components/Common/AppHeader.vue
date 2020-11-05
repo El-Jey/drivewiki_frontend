@@ -82,7 +82,7 @@
                                             isSearchOpened && searchQuery != ''
                                         "
                                         class="clear-search"
-                                        @click="clearSearchField"
+                                        @click="clearSearch"
                                     >
                                         <font-awesome-icon
                                             :icon="['fas', 'times']"
@@ -294,7 +294,7 @@ export default {
         },
     },
     methods: {
-        clearSearchField() {
+        clearSearch() {
             this.searchQuery = "";
             this.searchResults = null;
             document.getElementById("global_search").focus();

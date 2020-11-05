@@ -40,6 +40,9 @@ const store = new Vuex.Store({
     [types.SELECTED_BRAND](state, brand) {
       state.selectedBrand = state.selectedBrand == brand ? '' : brand;
     },
+    [types.SET_CURRENT_VEHICLE_TYPE](state, data) {
+      state.currentVehicleType = data;
+    },
     [types.SET_LOADING_DATA](state, data) {
       state.loadingData = data;
     },
@@ -66,13 +69,7 @@ const store = new Vuex.Store({
             return reject(error);
           });
       });
-    },
-    [types.SET_CURRENT_VEHICLE_TYPE](state, data) {
-      return new Promise((resolve, _reject) => {
-        state.currentVehicleType = data;
-        resolve();
-      });
-    },
+    }
   },
   getters: {
     isSiteSearchOpened: state => {
@@ -80,7 +77,7 @@ const store = new Vuex.Store({
     },
     getCurrentVehicleType: state => route => {
       return state.vehiclesSettings.filter((vehicle) => {
-        return vehicle.route === route || null;
+        return vehicle.route === route;
       });
     }
   }

@@ -43,20 +43,18 @@ router.beforeEach((to, _from, next) => {
     store.dispatch(REQUEST_VEHICLES_SETTINGS)
       .then(() => { // Settings saved to the store
         let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
-        store.dispatch(SET_CURRENT_VEHICLE_TYPE, currentVehicleType)
-          .then(() => {
-            next();
-          });
+        currentVehicleType = currentVehicleType.length ? store.getters.getCurrentVehicleType(to.path) : null
+        store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
+        next();
       })
       .catch((err) => {
         console.log(err); // TODO: на страницу ошибки, примерно так: next('error')
       });
   } else {
     let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
-    store.dispatch(SET_CURRENT_VEHICLE_TYPE, currentVehicleType)
-      .then(() => {
-        next();
-      });
+    currentVehicleType = currentVehicleType.length ? store.getters.getCurrentVehicleType(to.path) : null
+    store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
+    next();
   }
 });
 

@@ -78,43 +78,51 @@ main {
       justify-content: space-between;
       padding-right: 3em;
 
-      .vehicles-nav_list {
-        display: flex;
+      .vehicles-nav_container {
         height: 100%;
-        list-style: none;
 
-        li {
-          align-items: center;
+        .vehicles-nav_toggle {
+          display: none;
+        }
+
+        .vehicles-nav_list {
           display: flex;
-          cursor: pointer;
-          font-size: 14px;
-          min-width: 7em;
+          height: 100%;
+          list-style: none;
 
-          &:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-          }
-
-          >a {
+          li {
             align-items: center;
-            color: $button-primary-light-text-color;
             display: flex;
-            height: 100%;
-            justify-content: center;
-            opacity: 0.5;
-            padding: 0.5em;
-            text-decoration: none;
-            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            min-width: 7em;
 
-            &.active {
-              background-color: $button-primary-background-color;
-              opacity: 1;
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.2);
             }
-          }
 
-          >span {
-            color: #000;
-            font-weight: 500;
-            padding: .5em;
+            >a {
+              align-items: center;
+              color: $button-primary-light-text-color;
+              display: flex;
+              height: 100%;
+              justify-content: center;
+              opacity: 0.5;
+              padding: 0.5em;
+              text-decoration: none;
+              width: 100%;
+
+              &.active {
+                background-color: $button-primary-background-color;
+                opacity: 1;
+              }
+            }
+
+            >span {
+              color: #000;
+              font-weight: 500;
+              padding: .5em;
+            }
           }
         }
       }
@@ -191,7 +199,7 @@ main {
             }
 
             .search-results-container {
-              height: 200px;
+              height: 250px;
               left: 0;
               position: absolute;
               top: 30px;
@@ -536,7 +544,8 @@ footer {
         .vehicles-nav_container {
           display: flex;
           flex-direction: column;
-          height: 100%;
+          max-width: 50%;
+          overflow: hidden;
           width: 50%;
 
           .vehicles-nav_toggle {
@@ -596,11 +605,6 @@ footer {
               font-weight: 500;
             }
           }
-        }
-
-        >.vehicles-nav_container {
-          max-width: 50%;
-          overflow: hidden;
         }
 
         .utils-nav_container {
@@ -706,6 +710,73 @@ footer {
     .site-container {
       .topbar-right {
         padding-right: 1em;
+
+        .vehicles-nav_container {
+          display: flex;
+          flex-direction: column;
+          max-width: 50%;
+          overflow: hidden;
+          width: 50%;
+
+          .vehicles-nav_toggle {
+            align-items: center;
+            background-color: $button-primary-background-color;
+            color: $button-primary-light-text-color;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            max-width: 10em;
+            padding: 0 0.4em;
+            z-index: 1;
+
+            >span {
+              margin-right: .4em;
+            }
+
+            .fa-chevron-down {
+              height: inherit;
+              width: .7em;
+            }
+          }
+
+          .vehicles-nav_list {
+            max-height: 0;
+            overflow-y: hidden;
+
+            &.open {
+              box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+              display: flex;
+              flex-direction: column;
+              height: auto;
+              max-height: 250px;
+              max-width: 250px;
+              overflow-y: scroll;
+              position: absolute;
+              width: 100%;
+              top: 50px;
+              transition: max-height 0.3s linear;
+              z-index: 0;
+
+              li {
+                background-color: #f8f9fa;
+
+                >a {
+                  color: #000;
+
+                  &.active {
+                    color: $button-primary-light-text-color;
+                  }
+                }
+              }
+            }
+          }
+
+          li {
+            >a {
+              font-weight: 500;
+            }
+          }
+        }
 
         .utils-nav_container {
           &.extended {
