@@ -18,10 +18,11 @@
 </template>
 
 <script>
-import AppHeader from "./Common/AppHeader";
-import AppLeftBar from "./Common/AppLeftBar";
-import LoadingCircle from "./Common/LoadingCircle";
-import { TOGGLE_SITE_SEARCH } from "../store/mutation-types";
+import AppHeader from "@/Components/Common/AppHeader";
+import AppLeftBar from "@/Components/Common/AppLeftBar";
+import LoadingCircle from "@/Components/Common/LoadingCircle";
+import { bus } from "@/bus";
+import { TOGGLE_SITE_SEARCH } from "@/store/mutation-types";
 
 export default {
     components: {
@@ -41,11 +42,14 @@ export default {
     mounted() {
         document.body.addEventListener("click", (e) => {
             if (e.target.closest(".topbar-search-container")) {
+                // Don`t handle on .topbar-search-container
                 return;
             }
             if (!this.isSearchOpened) {
+                // Site search is closed
                 return;
             }
+            bus.$emit("clearVehiclesSearch");
             this.$store.commit(TOGGLE_SITE_SEARCH);
         });
 
@@ -75,10 +79,7 @@ export default {
                         leftSidebar.classList.add("open");
                     }
                     // Swipe left
-                    else if (
-                        diffX > 0 &&
-                        leftSidebar.classList.contains("open")
-                    ) {
+                    else if (diffX > 0 && leftSidebar.classList.contains("open")) {
                         leftSidebar.classList.remove("open");
                     }
                 }

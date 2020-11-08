@@ -10,6 +10,6 @@ exports.root = function (args) {
     return path.join.apply(path, [ _root ].concat(args));
 };
 
-exports.assetsPath = function (_path) {
-    return path.posix.join('static', _path);
-};
+// exports.assetsPath = function (_path) {
+//     return path.posix.join('static', _path);
+// };

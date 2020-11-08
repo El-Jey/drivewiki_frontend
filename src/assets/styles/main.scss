@@ -82,13 +82,22 @@ main {
         height: 100%;
 
         .vehicles-nav_toggle {
-          display: none;
+          align-items: center;
+          background-color: $button-primary-background-color;
+          color: $button-primary-light-text-color;
+          height: 100%;
+          justify-content: center;
+          max-width: 10em;
+          padding: 0 0.4em;
+          z-index: 1;
         }
 
         .vehicles-nav_list {
           display: flex;
           height: 100%;
           list-style: none;
+          max-height: 0;
+          overflow-y: hidden;
 
           li {
             align-items: center;
@@ -136,6 +145,14 @@ main {
         justify-content: flex-end;
         right: 0;
 
+        &.extended {
+          .topbar-search-container {
+            .search-n-settings {
+              box-shadow: 0px 0px 10px 5px #343a4080;
+            }
+          }
+        }
+
         .topbar-search-container {
           display: flex;
           flex: 1 0 auto;
@@ -156,7 +173,7 @@ main {
             width: 0;
 
             input {
-              background-color: rgba(255, 255, 255, 0.5);
+              background-color: #fff;
               color: #fff;
               padding-left: 0.5em;
               width: 100%;
@@ -198,18 +215,17 @@ main {
               width: 30px;
             }
 
-            .search-results-container {
+            .search-results__container {
               height: 250px;
               left: 0;
               position: absolute;
               top: 30px;
               width: calc(100% - 30px); // 30px - settings button width
+              z-index: 2;
 
               .search-results {
                 background-color: #fff;
-                box-shadow: 0px 2px 3px $header-background-color,
-                  -3px 2px 4px $header-background-color,
-                  3px 2px 4px $header-background-color;
+                box-shadow: 0 10px 15px -5px $header-background-color, -5px 5px 15px -5px $header-background-color, 5px 10px 15px -5px $header-background-color;
                 height: 100%;
                 overflow-y: scroll;
                 width: 100%;
@@ -539,8 +555,6 @@ footer {
       }
 
       .topbar-right {
-        padding-right: 0.5em;
-
         .vehicles-nav_container {
           display: flex;
           flex-direction: column;
@@ -549,14 +563,7 @@ footer {
           width: 50%;
 
           .vehicles-nav_toggle {
-            align-items: center;
-            background-color: $button-primary-background-color;
-            color: $button-primary-light-text-color;
             display: flex;
-            height: 100%;
-            justify-content: center;
-            padding: 0 0.4em;
-            z-index: 1;
 
             >span {
               margin-right: .4em;
@@ -569,12 +576,8 @@ footer {
           }
 
           .vehicles-nav_list {
-            max-height: 0;
-            overflow-y: hidden;
-
             &.open {
               box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-              display: flex;
               flex-direction: column;
               height: auto;
               max-height: 250px;
@@ -615,7 +618,6 @@ footer {
               position: initial;
 
               .search-n-settings {
-                background-color: rgb(255, 255, 255);
                 position: initial;
                 width: 100%;
 
@@ -623,7 +625,7 @@ footer {
                   color: $button-primary-dark-text-color;
                 }
 
-                .search-results-container {
+                .search-results__container {
                   padding: 0 .5em;
                   width: 100%;
                 }
@@ -719,15 +721,7 @@ footer {
           width: 50%;
 
           .vehicles-nav_toggle {
-            align-items: center;
-            background-color: $button-primary-background-color;
-            color: $button-primary-light-text-color;
             display: flex;
-            height: 100%;
-            justify-content: center;
-            max-width: 10em;
-            padding: 0 0.4em;
-            z-index: 1;
 
             >span {
               margin-right: .4em;
@@ -740,12 +734,8 @@ footer {
           }
 
           .vehicles-nav_list {
-            max-height: 0;
-            overflow-y: hidden;
-
             &.open {
               box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-              display: flex;
               flex-direction: column;
               height: auto;
               max-height: 250px;
@@ -857,6 +847,33 @@ footer {
 }
 
 @media screen and (min-width: 1200px) {
+
+  /* START: Header */
+  .site-topbar {
+    .site-container {
+      .topbar-right {
+        .vehicles-nav_container {
+          .vehicles-nav_toggle {
+            display: none;
+          }
+
+          .vehicles-nav_list {
+            max-height: 100%;
+          }
+        }
+
+        .utils-nav_container {
+          .topbar-search-container {
+            .search-n-settings {
+              input {
+                background-color: rgba(255, 255, 255, 0.5);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   /* START: Site-Main */
   main {

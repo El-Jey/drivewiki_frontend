@@ -101,7 +101,6 @@
 
 <script>
 import AppFooter from "./../Common/AppFooter";
-import config from "../../config";
 import {
     IS_EMPTY_MOTORCYCLE_DETAILS,
     MOTORCYCLE_DETAILS,
@@ -109,7 +108,8 @@ import {
     SET_CURRENT_VEHICLE_TYPE,
     VEHICLES_MODELS_LIST,
     VEHICLES_SETTINGS,
-} from "../../store/mutation-types";
+} from "@/store/mutation-types";
+import config from "@/config";
 
 const axios = require("axios").default;
 
@@ -127,9 +127,10 @@ export default {
         next((vm) => {
             if (from.name) {
                 // The route was changed, but the page was not updated
-                document
-                    .getElementById("vehiclesNavList")
-                    .classList.toggle("open");
+                let vehiclesNavList = document.getElementById("vehiclesNavList");
+                if (vehiclesNavList.classList.contains("open")) {
+                    vehiclesNavList.classList.remove("open");
+                }
             }
 
             if (!vm.$helpers.isEmptyObject(vm.$route.query)) {

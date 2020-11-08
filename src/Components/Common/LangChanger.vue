@@ -2,19 +2,22 @@
     <div class="locale-changer">
         <select @change="changeLanguage($event)">
             <option
-                v-for="(lang) in langs"
+                v-for="lang in langs"
                 :key="lang.locale"
                 :value="lang.locale"
                 :selected="lang.locale === $i18n.locale"
-            >{{ lang.name }}</option>
+            >
+                {{ lang.name }}
+            </option>
         </select>
     </div>
 </template>
 
 <script>
-const axios = require("axios").default;
 import { loadLanguageAsync } from "@/localization";
-import { IS_LOADING, SET_LOADING_DATA } from "../../store/mutation-types";
+import { IS_LOADING, SET_LOADING_DATA } from "@/store/mutation-types";
+
+const axios = require("axios").default;
 
 export default {
     data() {

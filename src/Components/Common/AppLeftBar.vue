@@ -1,14 +1,14 @@
 <template>
     <div id="left_sidebar">
         <div class="sidebar-home-link">
-            <a href="/">
-                <span>{{ $t('main_content.home_link') }}</span>
-            </a>
+            <router-link to="/">
+                <span>{{ $t("main_content.home_link") }}</span>
+            </router-link>
         </div>
 
         <ul class="sidebar-list">
             <li
-                v-for="(vehicle) in vehicles"
+                v-for="vehicle in vehicles"
                 class="sidebar-dropdown"
                 :class="vehicle.brand != selectedBrand ? '' : 'dropdown-active'"
                 :key="vehicle.brand"
@@ -19,17 +19,31 @@
                         class="caret-icon"
                         :icon="['fas', 'caret-right']"
                     />
-                    <font-awesome-icon v-else class="caret-icon" :icon="['fas', 'caret-down']" />
+                    <font-awesome-icon
+                        v-else
+                        class="caret-icon"
+                        :icon="['fas', 'caret-down']"
+                    />
 
                     <span>{{ vehicle.brand }}</span>
                 </button>
                 <transition name="leftside-dropdown">
                     <ul v-if="vehicle.brand == selectedBrand">
-                        <li v-for="(model) in vehicle.models" class="dropdown-item" :key="model">
+                        <li
+                            v-for="model in vehicle.models"
+                            class="dropdown-item"
+                            :key="model"
+                        >
                             <router-link
-                                :to="{ query: {brand: `${vehicle.brand}`, model: `${model}`}}"
+                                :to="{
+                                    query: {
+                                        brand: `${vehicle.brand}`,
+                                        model: `${model}`,
+                                    },
+                                }"
                                 append
-                            >{{ model }}</router-link>
+                                >{{ model }}</router-link
+                            >
                         </li>
                     </ul>
                 </transition>
@@ -43,7 +57,7 @@ import {
     SELECTED_BRAND,
     CAR_DETAILS,
     IS_EMPTY_CAR_DETAILS,
-} from "../../store/mutation-types";
+} from "@/store/mutation-types";
 
 const axios = require("axios").default;
 

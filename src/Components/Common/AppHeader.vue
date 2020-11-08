@@ -96,12 +96,21 @@
                                 />
                             </button>
                             <div
-                                class="search-results-container"
+                                class="search-results__container"
                                 v-if="searchQuery != ''"
                             >
                                 <div class="search-results">
-                                    <div v-if="!searchResults" class="empty-results">
-                                        <h3>Информация не найдена</h3>
+                                    <div
+                                        v-if="!searchResults"
+                                        class="empty-results"
+                                    >
+                                        <h3>
+                                            {{
+                                                $t(
+                                                    "header.empty_search_results"
+                                                )
+                                            }}
+                                        </h3>
                                     </div>
 
                                     <div v-else>
@@ -259,11 +268,12 @@
 </template>
 
 <script>
-import LangChanger from "./LangChanger";
-import { TOGGLE_SITE_SEARCH } from "../../store/mutation-types";
+import LangChanger from "@/Components/Common/LangChanger";
+import { TOGGLE_SITE_SEARCH } from "@/store/mutation-types";
+import { bus } from "@/bus";
+import config from "@/config";
 
 const axios = require("axios").default;
-const config = require("../../config");
 
 export default {
     components: {
@@ -293,11 +303,17 @@ export default {
             return this.$store.state.vehiclesSettings;
         },
     },
+    created() {
+        bus.$on("clearVehiclesSearch", this.clearSearch);
+    },
     methods: {
         clearSearch() {
             this.searchQuery = "";
             this.searchResults = null;
-            document.getElementById("global_search").focus();
+
+            if (this.isSearchOpened) {
+                document.getElementById("global_search").focus();
+            }
         },
         searchVehicles() {
             if (this.searchQuery != "") {
@@ -336,8 +352,7 @@ export default {
             if (this.isSearchOpened) {
                 document.getElementById("global_search").focus();
             } else {
-                this.searchQuery = "";
-                this.searchResults = null;
+                this.clearSearch();
             }
         },
         vehiclesNavListToggle() {
