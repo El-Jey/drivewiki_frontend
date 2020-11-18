@@ -13,7 +13,7 @@
                 :class="vehicle.brand != selectedBrand ? '' : 'dropdown-active'"
                 :key="vehicle.brand"
             >
-                <button @click="toggleLeftSideDropList(vehicle.brand, $event)">
+                <button @click="toggleLeftSideDropList(vehicle.brand)">
                     <font-awesome-icon
                         v-if="vehicle.brand != selectedBrand"
                         class="caret-icon"
@@ -76,7 +76,7 @@ export default {
         },
     },
     methods: {
-        toggleLeftSideDropList(brand, e) {
+        toggleLeftSideDropList(brand) {
             return this.$store.commit(SELECTED_BRAND, brand);
         },
     },

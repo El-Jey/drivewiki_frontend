@@ -1,6 +1,6 @@
 <template>
     <div class="locale-changer">
-        <select @change="changeLanguage($event)">
+        <select @change="changeLanguage()">
             <option
                 v-for="lang in langs"
                 :key="lang.locale"
@@ -36,7 +36,7 @@ export default {
             });
     },
     methods: {
-        changeLanguage(e) {
+        changeLanguage() {
             this.$store.commit(IS_LOADING, {
                 name: "loadingCircle",
                 value: true,
@@ -46,7 +46,7 @@ export default {
             });
             this.$helpers.toggleDocumentScroll();
 
-            loadLanguageAsync(e.target.value).then(() => {
+            loadLanguageAsync(event.target.value).then(() => {
                 this.$store.commit(IS_LOADING, {
                     name: "loadingCircle",
                     value: false,
