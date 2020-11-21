@@ -101,25 +101,14 @@
                                     class="search-settings"
                                     v-if="isSearchOpened && vehiclesSettings"
                                 >
-                                    <p
-                                        class="header"
-                                        style="text-transform: uppercase;"
-                                    >Фильтры</p>
-                                    <div class="setting-types">
-                                        <p
-                                            class="header"
-                                            style="
-    margin: 0.4em 0;
-    width: 100%;
-    text-align: center;
-    opacity: .5;
-"
-                                        >{{ $t("header.vehicle") }}</p>
+                                    <h3 class="header">Фильтры</h3>
+                                    <div class="setting setting-types">
+                                        <p class="header">{{ $t("header.vehicle") }}</p>
                                         <div class="body">
                                             <label class="checkbox-label">
                                                 <input
                                                     type="checkbox"
-                                                    v-model="checkmarkAll"
+                                                    v-model="checkmarkAllTypes"
                                                 >
                                                 {{ $t("header.search_settings.all") }}
                                             </label>
@@ -136,15 +125,7 @@
                                                 {{ $t("header.search_settings." + vehicle.translate_key) }}
                                             </label>
                                         </div>
-                                        <p
-                                            class="footer"
-                                            style="
-    color: red;
-    width: 100%;
-    text-align: center;
-    font-size: .8em;
-"
-                                        >Выберите транспортное средство</p>
+                                        <p class="footer">Выберите транспортное средство</p>
                                     </div>
                                 </div>
                             </div>
@@ -180,9 +161,7 @@
                                                         v-else
                                                         :icon="['fas', 'caret-down']"
                                                     />
-                                                    <span>{{
-                                                        manufacturer.brand
-                                                    }}</span>
+                                                    <span>{{ manufacturer.brand }}</span>
                                                 </button>
                                                 <transition-group
                                                     tag="ul"
@@ -200,12 +179,8 @@
                                             </li>
                                         </ul>
 
-                                        <ul v-if="
-                                                searchResults.motorcycles.length
-                                            ">
-                                            <h3>
-                                                {{ $t("header.motorcycles") }}
-                                            </h3>
+                                        <ul v-if="searchResults.motorcycles.length">
+                                            <h3>{{ $t("header.motorcycles") }}</h3>
                                             <li
                                                 v-for="(manufacturer,
                                                 index) in searchResults.motorcycles"
@@ -213,15 +188,19 @@
                                                 :key="index"
                                             >
                                                 <button @click="toggleBrandList(manufacturer.brand, manufacturer.type)">
-                                                    <font-awesome-icon :icon="['fas', 'caret-right']" />
-                                                    {{ manufacturer.brand }}
+                                                    <font-awesome-icon
+                                                        v-if="manufacturer.brand != selectedBrand"
+                                                        :icon="['fas', 'caret-right']"
+                                                    />
+                                                    <font-awesome-icon
+                                                        v-else
+                                                        :icon="['fas', 'caret-down']"
+                                                    />
+                                                    <span>{{ manufacturer.brand }}</span>
                                                 </button>
                                                 <transition-group
                                                     tag="ul"
-                                                    v-if="
-                                                        manufacturer.brand ==
-                                                        selectedBrand
-                                                    "
+                                                    v-if="manufacturer.brand == selectedBrand"
                                                     name="search-brand-dropdown"
                                                     class="dropdown-models"
                                                 >
@@ -229,14 +208,7 @@
                                                 v-for="model in manufacturer.models"
                                                 :key="model"
                                             >
-                                                <router-link :to="
-                                                                '/motorcycles?brand=' +
-                                                                manufacturer.brand +
-                                                                '&model=' +
-                                                                model
-                                                            ">{{
-                                                                model
-                                                            }}</router-link>
+                                                <router-link :to="'/motorcycles?brand=' +  manufacturer.brand + '&model=' + model">{{ model }}</router-link>
                                             </li>
                                             </transition-group>
                                             </li>
@@ -301,13 +273,19 @@ export default {
         currentVehicleType() {
             return this.$store.state.currentVehicleType;
         },
+        initializeSearchFilters() {
+            if (this.$store.state.vehiclesSettings !== null) {
+                console.log("Init filters");
+            }
+            return;
+        },
         isSearchOpened() {
             return this.$store.getters.isSiteSearchOpened;
         },
         vehiclesSettings() {
             return this.$store.state.vehiclesSettings;
         },
-        checkmarkAll: {
+        checkmarkAllTypes: {
             get: function () {
                 return this.vehiclesSettings
                     ? this.vehiclesSettings.length ==
@@ -341,26 +319,44 @@ export default {
         },
         searchVehicles() {
             if (this.searchQuery != "") {
-                axios
-                    .post("/public/vehicles/search", {
-                        searchString: this.searchQuery,
-                        filters: {
-                            vehicles: this.checkedVehicles,
-                        },
-                    })
-                    .then((response) => {
-                        if (!response.data.status) {
-                            console.log(response.data);
-                            return (this.searchResults = null);
+                document
+                    .querySelectorAll(".search-settings .footer")
+                    .forEach((element) => {
+                        if (element.classList.contains("visible")) {
+                            element.classList.remove("visible");
                         }
-
-                        console.log(response.data.result);
-                        return (this.searchResults = response.data.result);
-                    })
-                    .catch((error) => {
-                        console.log(error.response.data);
-                        return (this.searchResults = null);
                     });
+
+                if (this.validateSearchFilters()) {
+                    axios
+                        .post("/public/vehicles/search", {
+                            searchString: this.searchQuery,
+                            filters: {
+                                vehicles: this.checkedVehicles,
+                            },
+                        })
+                        .then((response) => {
+                            if (!response.data.status) {
+                                console.log(response.data);
+                                return (this.searchResults = null);
+                            }
+
+                            console.log(response.data.result);
+                            return (this.searchResults = response.data.result);
+                        })
+                        .catch((error) => {
+                            console.log(error.response.data);
+                            return (this.searchResults = null);
+                        });
+                } else {
+                    if (
+                        !this.$refs.globalSearchFilters.classList.contains(
+                            "visible"
+                        )
+                    ) {
+                        this.toggleFilters();
+                    }
+                }
             }
         },
         setCursorOnTail() {
@@ -385,8 +381,28 @@ export default {
                 this.clearSearch();
             }
         },
+        validateSearchFilters() {
+            let valid = true;
+
+            if (!this.checkedVehicles.length) {
+                document
+                    .querySelector(".setting-types .footer")
+                    .classList.add("visible");
+                valid = false;
+            }
+
+            return valid;
+        },
         vehiclesNavListToggle() {
             document.getElementById("vehiclesNavList").classList.toggle("open");
+        },
+    },
+    watch: {
+        vehiclesSettings(value) {
+            if (!Array.isArray(value)) {
+                return;
+            }
+            this.checkmarkAllTypes = value;
         },
     },
 };

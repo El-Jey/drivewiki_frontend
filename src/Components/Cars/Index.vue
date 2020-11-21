@@ -104,8 +104,7 @@ import {
     IS_EMPTY_CAR_DETAILS,
     SELECTED_BRAND,
     SET_CURRENT_VEHICLE_TYPE,
-    VEHICLES_MODELS_LIST,
-    VEHICLES_SETTINGS,
+    VEHICLES_MODELS_LIST
 } from "@/store/mutation-types";
 
 const axios = require("axios").default;

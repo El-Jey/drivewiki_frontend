@@ -5,9 +5,7 @@
 
         <main class="site-main h-100">
             <div class="site-container h-100">
-                <app-left-bar
-                    v-if="$route.name == 'Home' ? false : true"
-                ></app-left-bar>
+                <app-left-bar v-if="$route.name == 'Home' ? false : true"></app-left-bar>
 
                 <transition name="sideShift">
                     <router-view></router-view>
@@ -40,6 +38,7 @@ export default {
         },
     },
     mounted() {
+        // Close the site search by clicking on the body
         document.body.addEventListener("click", (e) => {
             if (e.target.closest(".topbar-search-container")) {
                 // Don`t handle on .topbar-search-container
@@ -53,17 +52,18 @@ export default {
             this.$store.commit(TOGGLE_SITE_SEARCH);
         });
 
+        // Handling sidebar opening by swipe
         let touchStartX = 0,
             touchEndX = 0;
         document.body.addEventListener("touchstart", (e) => {
-            if (e.changedTouches[0].clientY <= 50) {
-                // Don`t handle on header
-                return;
-            }
             touchStartX = e.changedTouches[0].clientX;
         });
-
         document.body.addEventListener("touchend", (e) => {
+            if (e.target.closest(".topbar-search-container")) {
+                // Don`t handle on .topbar-search-container
+                return;
+            }
+
             if (e.changedTouches[0].clientY <= 50) {
                 // Don`t handle on header
                 return;
@@ -79,7 +79,10 @@ export default {
                         leftSidebar.classList.add("open");
                     }
                     // Swipe left
-                    else if (diffX > 0 && leftSidebar.classList.contains("open")) {
+                    else if (
+                        diffX > 0 &&
+                        leftSidebar.classList.contains("open")
+                    ) {
                         leftSidebar.classList.remove("open");
                     }
                 }
