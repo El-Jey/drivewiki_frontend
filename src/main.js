@@ -44,7 +44,7 @@ router.beforeEach((to, _from, next) => {
       // Ok, settings are saved to the store
       .then(() => {
         let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
-        currentVehicleType = currentVehicleType.length ? currentVehicleType : null
+        currentVehicleType = currentVehicleType.length ? currentVehicleType[0] : null
         store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
         next();
       })
@@ -53,7 +53,7 @@ router.beforeEach((to, _from, next) => {
       });
   } else {
     let currentVehicleType = store.getters.getCurrentVehicleType(to.path); // The currently viewed section of site
-    currentVehicleType = currentVehicleType.length ? currentVehicleType : null
+    currentVehicleType = currentVehicleType.length ? currentVehicleType[0] : null
     store.commit(SET_CURRENT_VEHICLE_TYPE, currentVehicleType);
     next();
   }

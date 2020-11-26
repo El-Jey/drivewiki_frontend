@@ -105,7 +105,6 @@ import {
     IS_EMPTY_MOTORCYCLE_DETAILS,
     MOTORCYCLE_DETAILS,
     SELECTED_BRAND,
-    SET_CURRENT_VEHICLE_TYPE,
     VEHICLES_MODELS_LIST
 } from "@/store/mutation-types";
 import config from "@/config";

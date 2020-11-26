@@ -103,7 +103,6 @@ import {
     CAR_DETAILS,
     IS_EMPTY_CAR_DETAILS,
     SELECTED_BRAND,
-    SET_CURRENT_VEHICLE_TYPE,
     VEHICLES_MODELS_LIST
 } from "@/store/mutation-types";
 

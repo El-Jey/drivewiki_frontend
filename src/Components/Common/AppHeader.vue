@@ -31,7 +31,7 @@
                         @click="vehiclesNavListToggle()"
                     >
                         <div>
-                            <span v-if="currentVehicleType">{{ $t("header." + currentVehicleType[0].translate_key) }}</span>
+                            <span v-if="currentVehicleType">{{ $t("header." + currentVehicleType.translate_key) }}</span>
 
                             <span v-else>{{ $t("header.vehicle") }}</span>
                             <font-awesome-icon :icon="['fas', 'chevron-down']" />
@@ -70,7 +70,7 @@
                             <div class="search-input-container">
                                 <input
                                     id="global_search"
-                                    v-model="searchQuery"
+                                    v-model="search.query"
                                     @focus="setCursorOnTail()"
                                     @input="searchVehicles()"
                                     type="text"
@@ -79,7 +79,7 @@
                                 />
                                 <transition name="fade-clear-search">
                                     <div
-                                        v-show="isSearchOpened && searchQuery != ''"
+                                        v-show="isSearchOpened && search.query != ''"
                                         class="clear-search"
                                         @click="clearSearch()"
                                     >
@@ -131,11 +131,11 @@
                             </div>
                             <div
                                 class="search-results__container"
-                                v-if="searchQuery != ''"
+                                v-if="search.query != ''"
                             >
                                 <div class="search-results">
                                     <div
-                                        v-if="!searchResults"
+                                        v-if="!search.results.data"
                                         class="empty-results"
                                     >
                                         <h3>
@@ -144,28 +144,28 @@
                                     </div>
 
                                     <div v-else>
-                                        <ul v-if="searchResults.cars.length">
+                                        <ul v-if="search.results.data.cars.length">
                                             <h3>{{ $t("header.cars") }}</h3>
                                             <li
                                                 v-for="(manufacturer,
-                                                index) in searchResults.cars"
+                                                index) in search.results.data.cars"
                                                 class="brands-dropdown"
                                                 :key="index"
                                             >
-                                                <button @click="toggleBrandList(manufacturer.brand, manufacturer.brand)">
+                                                <button @click="toggleBrandList(manufacturer.brand, manufacturer.type)">
                                                     <font-awesome-icon
-                                                        v-if="manufacturer.brand != selectedBrand"
-                                                        :icon="['fas', 'caret-right']"
+                                                        v-if="manufacturer.brand === search.results.selected.brand && manufacturer.type === search.results.selected.type"
+                                                        :icon="['fas', 'caret-down']"
                                                     />
                                                     <font-awesome-icon
                                                         v-else
-                                                        :icon="['fas', 'caret-down']"
+                                                        :icon="['fas', 'caret-right']"
                                                     />
                                                     <span>{{ manufacturer.brand }}</span>
                                                 </button>
                                                 <transition-group
                                                     tag="ul"
-                                                    v-if="manufacturer.brand == selectedBrand"
+                                                    v-if="manufacturer.brand === search.results.selected.brand && manufacturer.type === search.results.selected.type"
                                                     name="search-brand-dropdown"
                                                     class="dropdown-models"
                                                 >
@@ -179,28 +179,28 @@
                                             </li>
                                         </ul>
 
-                                        <ul v-if="searchResults.motorcycles.length">
+                                        <ul v-if="search.results.data.motorcycles.length">
                                             <h3>{{ $t("header.motorcycles") }}</h3>
                                             <li
                                                 v-for="(manufacturer,
-                                                index) in searchResults.motorcycles"
+                                                index) in search.results.data.motorcycles"
                                                 class="brands-dropdown"
                                                 :key="index"
                                             >
                                                 <button @click="toggleBrandList(manufacturer.brand, manufacturer.type)">
                                                     <font-awesome-icon
-                                                        v-if="manufacturer.brand != selectedBrand"
-                                                        :icon="['fas', 'caret-right']"
+                                                        v-if="manufacturer.brand === search.results.selected.brand && manufacturer.type === search.results.selected.type"
+                                                        :icon="['fas', 'caret-down']"
                                                     />
                                                     <font-awesome-icon
                                                         v-else
-                                                        :icon="['fas', 'caret-down']"
+                                                        :icon="['fas', 'caret-right']"
                                                     />
                                                     <span>{{ manufacturer.brand }}</span>
                                                 </button>
                                                 <transition-group
                                                     tag="ul"
-                                                    v-if="manufacturer.brand == selectedBrand"
+                                                    v-if="manufacturer.brand === search.results.selected.brand && manufacturer.type === search.results.selected.type"
                                                     name="search-brand-dropdown"
                                                     class="dropdown-models"
                                                 >
@@ -261,9 +261,16 @@ export default {
             appName: config.app.name,
             appIcon: config.app.icon,
             checkedVehicles: [],
-            searchQuery: "",
-            searchResults: null,
-            selectedBrand: null,
+            search: {
+                query: "",
+                results: {
+                    data: null,
+                    selected: {
+                        brand: "",
+                        type: "",
+                    },
+                },
+            },
         };
     },
     computed: {
@@ -272,12 +279,6 @@ export default {
         },
         currentVehicleType() {
             return this.$store.state.currentVehicleType;
-        },
-        initializeSearchFilters() {
-            if (this.$store.state.vehiclesSettings !== null) {
-                console.log("Init filters");
-            }
-            return;
         },
         isSearchOpened() {
             return this.$store.getters.isSiteSearchOpened;
@@ -310,15 +311,15 @@ export default {
     },
     methods: {
         clearSearch() {
-            this.searchQuery = "";
-            this.searchResults = null;
+            this.search.query = "";
+            this.search.results.data = null;
 
             if (this.isSearchOpened) {
                 document.getElementById("global_search").focus();
             }
         },
         searchVehicles() {
-            if (this.searchQuery != "") {
+            if (this.search.query != "") {
                 document
                     .querySelectorAll(".search-settings .footer")
                     .forEach((element) => {
@@ -330,23 +331,21 @@ export default {
                 if (this.validateSearchFilters()) {
                     axios
                         .post("/public/vehicles/search", {
-                            searchString: this.searchQuery,
+                            searchString: this.search.query,
                             filters: {
                                 vehicles: this.checkedVehicles,
                             },
                         })
                         .then((response) => {
                             if (!response.data.status) {
-                                console.log(response.data);
-                                return (this.searchResults = null);
+                                return (this.search.results.data = null);
                             }
 
-                            console.log(response.data.result);
-                            return (this.searchResults = response.data.result);
+                            return (this.search.results.data =
+                                response.data.result);
                         })
                         .catch((error) => {
-                            console.log(error.response.data);
-                            return (this.searchResults = null);
+                            return (this.search.results.data = null);
                         });
                 } else {
                     if (
@@ -364,8 +363,16 @@ export default {
                 event.target.value.length;
         },
         toggleBrandList(brand, vehicleType) {
-            return (this.selectedBrand =
-                this.selectedBrand == brand ? "" : brand);
+            let selected = this.search.results.selected;
+
+            if (selected.brand === brand && selected.type === vehicleType) {
+                selected.brand = "";
+                selected.type = "";
+                return;
+            }
+
+            selected.brand = brand;
+            selected.type = vehicleType;
         },
         toggleFilters() {
             this.$refs.globalSearchFilters.classList.toggle("visible");
