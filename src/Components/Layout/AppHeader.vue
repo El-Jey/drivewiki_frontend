@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import LangChanger from "@/Components/Common/LangChanger";
+import LangChanger from "@/Components/LangChanger";
 import { TOGGLE_SITE_SEARCH } from "@/store/mutation-types";
 import { bus } from "@/bus";
 import config from "@/config";

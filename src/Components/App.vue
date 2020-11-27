@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import AppHeader from "@/Components/Common/AppHeader";
-import AppLeftBar from "@/Components/Common/AppLeftBar";
-import LoadingCircle from "@/Components/Common/LoadingCircle";
+import AppHeader from "@/Components/Layout/AppHeader";
+import AppLeftBar from "@/Components/Layout/AppLeftBar";
+import LoadingCircle from "@/Components/Preloaders/Circle";
 import { bus } from "@/bus";
 import { TOGGLE_SITE_SEARCH } from "@/store/mutation-types";
 

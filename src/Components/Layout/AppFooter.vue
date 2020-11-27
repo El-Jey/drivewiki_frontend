@@ -7,7 +7,7 @@
 </template>
 
 <script>
-const config = require("../../config");
+import config from "@/config";
 
 export default {
     data() {

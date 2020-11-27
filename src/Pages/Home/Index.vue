@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import AppFooter from "../Common/AppFooter";
+import AppFooter from "@/Components/Layout/AppFooter";
 
 export default {
     name: "app",
     components: {
-        AppFooter
-    }
+        AppFooter,
+    },
 };
 </script>

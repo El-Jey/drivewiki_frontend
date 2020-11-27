@@ -7,8 +7,10 @@ import {
   i18n
 } from '@/localization';
 
-import CustomPlugin from '@/CustomPlugin';
+// Custom plugins
+import Plugins from '@/Plugins';
 
+// Font Awesome
 import {
   library
 } from '@fortawesome/fontawesome-svg-core';
@@ -26,8 +28,10 @@ import {
   FontAwesomeIcon
 } from '@fortawesome/vue-fontawesome';
 
+// Styles
 import '@/assets/styles/main.scss';
 
+// Vuex store mutations, actions
 import {
   REQUEST_VEHICLES_SETTINGS,
   SET_CURRENT_VEHICLE_TYPE
@@ -36,7 +40,7 @@ import {
 library.add(faBan, faBars, faCaretDown, faCaretRight, faCaretRight, faChevronDown, faSearch, faSlidersH, faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.use(CustomPlugin);
+Vue.use(...Plugins);
 
 router.beforeEach((to, _from, next) => {
   if (!store.state.vehiclesSettings) {
@@ -65,5 +69,5 @@ new Vue({
   i18n,
   router,
   store,
-  CustomPlugin
-})
+  Plugins
+});

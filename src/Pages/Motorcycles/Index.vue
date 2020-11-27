@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import AppFooter from "./../Common/AppFooter";
+import AppFooter from "@/Components/Layout/AppFooter";
 import {
     IS_EMPTY_MOTORCYCLE_DETAILS,
     MOTORCYCLE_DETAILS,

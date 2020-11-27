@@ -1,10 +1,16 @@
 <template>
     <div class="content-container">
-        <div v-if="!carInfo" class="info-container">
+        <div
+            v-if="!carInfo"
+            class="info-container"
+        >
             <div class="main-info empty-info">
                 <h5 v-if="!isEmptyCarInfo">
                     <p class="arrow-left-notice">
-                        <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
+                        <img
+                            :src="imagesFolder.icons + 'arrow-left.png'"
+                            alt
+                        />
                         <span>{{
                             $t("main_content.choose_from_list", {
                                 vehicle: $t("common.car"),
@@ -15,7 +21,10 @@
                 <h5 v-else>
                     <p>{{ $t("main_content.empty_details_info") }}</p>
                     <p class="arrow-left-notice">
-                        <img :src="imagesFolder.icons + 'arrow-left.png'" alt />
+                        <img
+                            :src="imagesFolder.icons + 'arrow-left.png'"
+                            alt
+                        />
                         <span>{{
                             $t("main_content.choose_from_list", {
                                 vehicle: $t("common.car"),
@@ -30,7 +39,10 @@
                 </h5>
             </div>
         </div>
-        <div v-else class="info-container">
+        <div
+            v-else
+            class="info-container"
+        >
             <div class="main-info info">
                 <p
                     v-if="carInfo.totalInfo.description"
@@ -97,13 +109,13 @@
 </template>
 
 <script>
-import AppFooter from "../Common/AppFooter";
+import AppFooter from "@/Components/Layout/AppFooter";
 import config from "@/config";
 import {
     CAR_DETAILS,
     IS_EMPTY_CAR_DETAILS,
     SELECTED_BRAND,
-    VEHICLES_MODELS_LIST
+    VEHICLES_MODELS_LIST,
 } from "@/store/mutation-types";
 
 const axios = require("axios").default;
@@ -122,7 +134,9 @@ export default {
         next((vm) => {
             if (from.name) {
                 // The route was changed, but the page was not updated
-                let vehiclesNavList = document.getElementById("vehiclesNavList");
+                let vehiclesNavList = document.getElementById(
+                    "vehiclesNavList"
+                );
                 if (vehiclesNavList.classList.contains("open")) {
                     vehiclesNavList.classList.remove("open");
                 }

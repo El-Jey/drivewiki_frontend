@@ -1,6 +1,6 @@
-import CarsApp from '@/components/Cars';
-import MotorcyclesApp from '@/components/Motorcycles';
-import Home from '@/components/Home';
+import CarsApp from '@/Pages/Cars';
+import MotorcyclesApp from '@/Pages/Motorcycles';
+import Home from '@/Pages/Home';
 
 const routes = [{
     path: '/',
